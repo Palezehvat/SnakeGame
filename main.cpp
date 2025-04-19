@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    Window::Application app(argc, argv);
+    nApplication::Application app(argc, argv);
     app.run();
     return 0;
 }

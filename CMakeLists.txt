@@ -16,10 +16,12 @@ include_directories(inc)
 
 add_library(model src/snake.cpp src/food.cpp)
 add_library(logger src/logger.cpp)
+add_library(mainwindow src/mainwindow.cpp)
 add_library(app src/application.cpp)
 add_library(controller src/gamecontroller.cpp)
 target_link_libraries(logger PRIVATE spdlog::spdlog)
-target_link_libraries(app PRIVATE controller logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(mainwindow PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(app PRIVATE controller mainwindow logger Qt6::Core Qt6::Gui Qt6::Widgets)
 # ----- Main ----- #
 
 add_executable(main main.cpp)

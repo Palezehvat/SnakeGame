@@ -2,22 +2,19 @@
 #define APPLICATION_H
 
 #include <QApplication>
-#include <QPushButton>
-#include <QMainWindow>
 #include <iostream>
+#include "mainwindow.h"
 #include "gamecontroller.h"
 #include "logger.h"
 
-namespace Window {
+namespace nApplication {
 
 class Application {
 private:
-    Control::ControlStates status();
+    nControlStates::ControlStates status();
     std::shared_ptr<spdlog::logger> logger;
     QApplication* app = nullptr;
-    QMainWindow* mainWindow = nullptr;
-    QPushButton* settings = nullptr;
-    QPushButton* startGame = nullptr;
+    nMainWindow::MainWindow* mainWindow = nullptr;
 public:
     Application(int argc, char *argv[]) {
         Log::Logger::init();
@@ -29,9 +26,7 @@ public:
     }
 
     void run();
-
 private:
-    void init(); 
     void handleEvents();
     void update();
     void render();

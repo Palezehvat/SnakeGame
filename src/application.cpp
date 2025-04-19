@@ -1,31 +1,8 @@
-#include <QApplication>
-#include <QMainWindow>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QVBoxLayout>
-#include <iostream>
 #include "application.h"
-#include "logger.h"
 
-namespace Window {
-    void Application::init() {
-        mainWindow = new QMainWindow();
-        mainWindow->setWindowTitle("Snake game");
-        mainWindow->resize(400, 300);
-        
-        startGame = new QPushButton("Start Game!", mainWindow);
-        
-        QWidget* centralWidget = new QWidget(mainWindow);
-        mainWindow->setCentralWidget(centralWidget);
-
-        QVBoxLayout* layout = new QVBoxLayout(centralWidget);
-        layout->setAlignment(Qt::AlignCenter);
-
-        layout->addWidget(startGame);
-    }
-
+namespace nApplication {
     void Application::run() {
-        init();
+        mainWindow = new nMainWindow::MainWindow();
         logger->info("Приложение успешно запущено");
         mainWindow->show();
         int result = app->exec();
