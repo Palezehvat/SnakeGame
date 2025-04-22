@@ -5,46 +5,32 @@ namespace nMainWindow {
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     this->setWindowTitle("Snake game");
     this->resize(400, 300);
-    
-    QString imagePath = QCoreApplication::applicationDirPath() + "/../images/background.png";
-    QPixmap background(imagePath);
+    stackedWidget = new QStackedWidget();
+    setCentralWidget(stackedWidget);
 
-    logger = Log::Logger::getLogger(); 
+    menu = new nMenu::Menu();
+    settings = new nSettings::Settings();
 
-    if (background.isNull()) {
-        logger->error("Не удалось подгрузить картинку, на задний фон экрана(главное меню)");
-    } else {
-        logger->info("Картинка успешно подгружена");
-        QPalette palette;
-        palette.setBrush(QPalette::Window, background.scaled(size(), Qt::IgnoreAspectRatio));
-        this->setPalette(palette);
-    }
+    stackedWidget->addWidget(menu);
+    stackedWidget->addWidget(settings);
 
-    startGame = new QPushButton("Start Game!", this);
-        
-    QWidget* centralWidget = new QWidget(this);
-    this->setCentralWidget(centralWidget);
+    stackedWidget->setCurrentWidget(menu);
 
-    QVBoxLayout* layout = new QVBoxLayout(centralWidget);
-    layout->setAlignment(Qt::AlignCenter);
-
-    layout->addWidget(startGame);
+    connect(menu, &nMenu::Menu::switchToSettings, this, &MainWindow::switchToSettings);
+    connect(settings, &nSettings::Settings::switchToMenu, this, &MainWindow::switchToMenu);
+    connect(menu, &nMenu::Menu::switchToGame, this, &MainWindow::switchToGame);
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event) {
-    QString imagePath = QCoreApplication::applicationDirPath() + "/../images/background.png";
-    QPixmap background(imagePath);
-    if (background.isNull()) {
-        logger->error("Не удалось подгрузить картинку, на задний фон экрана(главное меню),"
-                      "во время изменения размера экрана");
-    } else {
-        background = background.scaled(this->size(), Qt::IgnoreAspectRatio,
-        Qt::SmoothTransformation);
-    
-        QPalette palette;
-        palette.setBrush(QPalette::Window, QBrush(background));
-        this->setPalette(palette);
-    }
+void MainWindow::switchToSettings() {
+    stackedWidget->setCurrentWidget(settings);
+}
+
+void MainWindow::switchToMenu() {
+    stackedWidget->setCurrentWidget(menu);
+}
+
+void MainWindow::switchToGame() {
+    // stackedWidget->setCurrentWidget(game);
 }
 
 }

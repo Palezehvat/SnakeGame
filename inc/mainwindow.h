@@ -1,31 +1,33 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QApplication>
-#include <QWidget>
-#include <QPushButton>
 #include <QMainWindow>
-#include <QVBoxLayout>
-#include <QPalette>
-#include <QPixmap>
+#include <QStackedWidget>
 #include <iostream>
 #include "gamecontroller.h"
 #include "logger.h"
+#include "settings.h"
+#include "mainmenu.h"
+
 
 namespace nMainWindow {
 
 class MainWindow : public QMainWindow {
+    Q_OBJECT
+
 public:
     MainWindow(QWidget* parent = nullptr);
-    void showGame();
-    void showSettings();
 
 private:
     std::shared_ptr<spdlog::logger> logger;
-    QPushButton* settings = nullptr;
-    QPushButton* startGame = nullptr;
+    QStackedWidget* stackedWidget;
+    nMenu::Menu* menu = nullptr;
+    nSettings::Settings* settings = nullptr;
 
-    void resizeEvent(QResizeEvent* event) override;;
+private slots:
+    void switchToSettings();
+    void switchToGame();
+    void switchToMenu();
 };
 
 };
