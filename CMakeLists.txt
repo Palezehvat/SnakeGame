@@ -33,13 +33,15 @@ qt_add_library(mainwindow
     inc/mainwindow.h
 )
 
+add_library(view src/gameview.cpp)
 add_library(app src/application.cpp)
 add_library(controller src/gamecontroller.cpp)
 
 target_link_libraries(logger PRIVATE spdlog::spdlog)
 target_link_libraries(menu PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(settings PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
-target_link_libraries(mainwindow PRIVATE logger menu settings Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(view PRIVATE logger settings Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(mainwindow PRIVATE logger view menu settings Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(app PRIVATE controller mainwindow logger Qt6::Core Qt6::Gui Qt6::Widgets)
 
 # ----- Main ----- #

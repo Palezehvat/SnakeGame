@@ -14,14 +14,14 @@ class Settings : public QWidget {
 
 public:
     Settings(QWidget* parent = nullptr);
-    int getLength() {return length;};
-    int getWidth() {return width;};
+    static int getLength();
+    static int getWidth();
 
 private:
     std::shared_ptr<spdlog::logger> logger;
     void resizeEvent(QResizeEvent* event) override;
-    int length = 5;
-    int width = 5;
+    static int length;
+    static int width;
     //int sizeRocks = 0;
 
 signals:

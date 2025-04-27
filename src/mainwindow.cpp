@@ -10,9 +10,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     menu = new nMenu::Menu();
     settings = new nSettings::Settings();
+    game = new nGameBoard::GameBoard(); //
 
     stackedWidget->addWidget(menu);
     stackedWidget->addWidget(settings);
+    stackedWidget->addWidget(game); //
 
     stackedWidget->setCurrentWidget(menu);
 
@@ -30,7 +32,8 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToGame() {
-    // stackedWidget->setCurrentWidget(game);
+    game->createBoard(); //
+    stackedWidget->setCurrentWidget(game); //
 }
 
 }

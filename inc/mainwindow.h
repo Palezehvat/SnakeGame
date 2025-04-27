@@ -8,6 +8,7 @@
 #include "logger.h"
 #include "settings.h"
 #include "mainmenu.h"
+#include "gameview.h"
 
 
 namespace nMainWindow {
@@ -23,6 +24,7 @@ private:
     QStackedWidget* stackedWidget;
     nMenu::Menu* menu = nullptr;
     nSettings::Settings* settings = nullptr;
+    nGameBoard::GameBoard* game = nullptr;
 
 private slots:
     void switchToSettings();
