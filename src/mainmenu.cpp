@@ -1,4 +1,5 @@
 #include "mainmenu.h"
+#include <iostream>
 
 namespace nMenu {
     Menu::Menu(QWidget* parent) : QWidget(parent) {
@@ -36,6 +37,7 @@ namespace nMenu {
         layout->addWidget(toSettings);
         connect(toSettings, &QPushButton::clicked, this, &Menu::switchToSettings);
         connect(startGame, &QPushButton::clicked, this, &Menu::switchToGame);
+        logger->info("Класс Menu успешно инициализирован");
     }
 
     void Menu::resizeEvent(QResizeEvent* event) {
@@ -52,5 +54,6 @@ namespace nMenu {
             palette.setBrush(QPalette::Window, QBrush(background));
             this->setPalette(palette);
         }
+        logger->info("Размер начального окна успешно изменён");
     }
 }

@@ -1,5 +1,6 @@
 #include "application.h"
 
+
 namespace nApplication {
     void Application::run() {
         mainWindow = new nMainWindow::MainWindow();

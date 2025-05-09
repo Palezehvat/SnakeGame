@@ -4,14 +4,12 @@
 #include <QApplication>
 #include <iostream>
 #include "mainwindow.h"
-#include "gamecontroller.h"
 #include "logger.h"
 
 namespace nApplication {
 
 class Application {
 private:
-    nControlStates::ControlStates status();
     std::shared_ptr<spdlog::logger> logger;
     QApplication* app = nullptr;
     nMainWindow::MainWindow* mainWindow = nullptr;
@@ -23,6 +21,7 @@ public:
         if (!app) {
             logger->error("Ошибка инициализации QApplication!");
         }
+        logger->info("Класс Application успешно инициализирован");
     }
 
     void run();

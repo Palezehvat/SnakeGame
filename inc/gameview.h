@@ -4,31 +4,33 @@
 #include <QPainter>
 #include "settings.h"
 #include "logger.h"
+#include "gameboard.h"
+#include "food.h"
+#include "snake.h"
 
 
-namespace nGameBoard{
+namespace nGameView{
 
-struct Cell {
-    int row;
-    int col;
-    QPixmap texture;
-};
-    
-class GameBoard : public QWidget {
+class GameView : public QWidget {
 public:
-    GameBoard(QWidget* parent = nullptr);
-    void createBoard();
+    GameView(int sizeCell, int length, int width, QWidget* parent = nullptr);
+    void setGameBoard(std::shared_ptr<nGameBoard::GameBoard> board);
+    void setFood(std::shared_ptr<nFood::Food>);
+    //void setSnake(std::shared_ptr<nSnake::Snake);
 
 private:
-    int sizeCell = 20;
+    int sizeCell;
     int numberOfCellsLength;
     int numberOfCellsWidth;
-    QVector<QVector<Cell>> board;
     std::shared_ptr<spdlog::logger> logger;
+    std::shared_ptr<nGameBoard::GameBoard> gameboard;
+    std::shared_ptr<nFood::Food> food;
+
 
     void paintEvent(QPaintEvent*) override;
     void resizeEvent(QResizeEvent* event) override;
     void drawBoard(QPainter& p);
+    void drawFood(QPainter& p);
     QSize sizeHint() const override;
 };
 

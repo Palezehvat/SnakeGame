@@ -14,9 +14,15 @@ include_directories(inc)
 
 # ----- Modules ----- #
 
-add_library(model src/snake.cpp src/food.cpp)
+add_library(snake src/snake.cpp)
 add_library(logger STATIC src/logger.cpp)
 set_target_properties(logger PROPERTIES POSITION_INDEPENDENT_CODE ON)
+add_library(board src/gameboard.cpp)
+
+qt_add_library(food
+    src/food.cpp
+    inc/food.h
+)
 
 qt_add_library(menu
     src/mainmenu.cpp
@@ -38,13 +44,16 @@ add_library(app src/application.cpp)
 add_library(controller src/gamecontroller.cpp)
 
 target_link_libraries(logger PRIVATE spdlog::spdlog)
-target_link_libraries(menu PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(settings PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
-target_link_libraries(view PRIVATE logger settings Qt6::Core Qt6::Gui Qt6::Widgets)
-target_link_libraries(mainwindow PRIVATE logger view menu settings Qt6::Core Qt6::Gui Qt6::Widgets)
-target_link_libraries(app PRIVATE controller mainwindow logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(menu PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(food PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(board PRIVATE logger settings Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(view PRIVATE logger settings board food snake Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(controller PRIVATE logger board food snake view Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(mainwindow PRIVATE logger view menu settings controller Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(app PRIVATE mainwindow logger Qt6::Core Qt6::Gui Qt6::Widgets)
 
 # ----- Main ----- #
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE app model Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(main PRIVATE app Qt6::Core Qt6::Gui Qt6::Widgets)

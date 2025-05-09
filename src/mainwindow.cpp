@@ -3,37 +3,47 @@
 namespace nMainWindow {
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+    logger = Log::Logger::getLogger();
     this->setWindowTitle("Snake game");
     this->resize(400, 300);
     stackedWidget = new QStackedWidget();
     setCentralWidget(stackedWidget);
+    menu = std::make_shared<nMenu::Menu>();
+    settings = std::make_shared<nSettings::Settings>();
+    controller = std::make_shared<nGameController::GameController>();
 
-    menu = new nMenu::Menu();
-    settings = new nSettings::Settings();
-    game = new nGameBoard::GameBoard(); //
+    stackedWidget->addWidget(menu.get());
+    stackedWidget->addWidget(settings.get());
 
-    stackedWidget->addWidget(menu);
-    stackedWidget->addWidget(settings);
-    stackedWidget->addWidget(game); //
+    stackedWidget->setCurrentWidget(menu.get());
 
-    stackedWidget->setCurrentWidget(menu);
-
-    connect(menu, &nMenu::Menu::switchToSettings, this, &MainWindow::switchToSettings);
-    connect(settings, &nSettings::Settings::switchToMenu, this, &MainWindow::switchToMenu);
-    connect(menu, &nMenu::Menu::switchToGame, this, &MainWindow::switchToGame);
+    connect(menu.get(), &nMenu::Menu::switchToSettings, this, &MainWindow::switchToSettings);
+    connect(settings.get(), &nSettings::Settings::switchToMenu, this, &MainWindow::switchToMenu);
+    connect(menu.get(), &nMenu::Menu::switchToGame, this, &MainWindow::switchToGame);
+    logger->info("Класс MainWindow успешно инициализирован");
 }
 
 void MainWindow::switchToSettings() {
-    stackedWidget->setCurrentWidget(settings);
+    stackedWidget->setCurrentWidget(settings.get());
+    logger->info("Успешная смена окна на настройки");
 }
 
 void MainWindow::switchToMenu() {
-    stackedWidget->setCurrentWidget(menu);
+    stackedWidget->setCurrentWidget(menu.get());
+    logger->info("Успешная смена окна на меню");
 }
 
 void MainWindow::switchToGame() {
-    game->createBoard(); //
-    stackedWidget->setCurrentWidget(game); //
+    controller->startGame();
+    board = controller->getBoard();
+
+    if (!boardAdded) {
+        stackedWidget->addWidget(board.get());
+        boardAdded = true;
+    }
+
+    stackedWidget->setCurrentWidget(board.get());
+    logger->info("Успешная смена окна на игру");
 }
 
 }

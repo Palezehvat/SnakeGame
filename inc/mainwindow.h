@@ -22,9 +22,11 @@ public:
 private:
     std::shared_ptr<spdlog::logger> logger;
     QStackedWidget* stackedWidget;
-    nMenu::Menu* menu = nullptr;
-    nSettings::Settings* settings = nullptr;
-    nGameBoard::GameBoard* game = nullptr;
+    std::shared_ptr<nMenu::Menu> menu = nullptr;
+    std::shared_ptr<nSettings::Settings> settings = nullptr;
+    std::shared_ptr<nGameController::GameController> controller = nullptr;
+    std::shared_ptr<nGameView::GameView> board = nullptr;
+    bool boardAdded = false;
 
 private slots:
     void switchToSettings();
