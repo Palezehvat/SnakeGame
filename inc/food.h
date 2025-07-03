@@ -13,6 +13,7 @@ public:
     Food(int length, int width);
     void respawn(const std::vector<QPoint>& freeCells);
     std::optional<QPoint> getPosition() const;
+    std::optional<QPoint> clear();
 
 private:
     std::shared_ptr<spdlog::logger> logger;

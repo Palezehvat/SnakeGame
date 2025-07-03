@@ -9,6 +9,15 @@ namespace nFood {
         logger->info("Класс Food успешно инициализирован");
     }
 
+    std::optional<QPoint> Food::clear() {
+        if (position.has_value()) {
+            QPoint pos = position.value();
+            position.reset();
+            return pos;
+        }
+        return std::nullopt;
+    }
+
     void Food::respawn(const std::vector<QPoint>& freeCells) {
         if (freeCells.empty()) {
             position = std::nullopt;

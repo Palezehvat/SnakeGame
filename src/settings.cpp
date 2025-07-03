@@ -3,7 +3,6 @@
 namespace nSettings {
     int Settings::length = 10;
     int Settings::width = 15;
-    int Settings::sizeCell = 20;
 
     Settings::Settings(QWidget* parent) :QWidget(parent) {
         logger = Log::Logger::getLogger();
@@ -24,9 +23,5 @@ namespace nSettings {
     
     int Settings::getWidth() {
         return width;
-    }
-    
-    int Settings::getSizeCell() {
-        return sizeCell;
     }
 }

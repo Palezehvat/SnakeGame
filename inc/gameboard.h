@@ -10,8 +10,29 @@ namespace nGameBoard{
 
 enum TypeCell {
     grass,
-    snake,
-    food
+    food,
+    bodyVertical,
+    bodyHorizontal,
+    bodyRight,
+    bodyLeft,
+    bodyUp,
+    bodyDown,
+    headUp,
+    headDown,
+    headLeft,
+    headRight,
+    headTurnUp,
+    headTurnDown,
+    headTurnRight,
+    headTurnLeft,
+    tailTurnUp,
+    tailTurnDown,
+    tailTurnRight,
+    tailTurnLeft,
+    tailUp,
+    tailDown,
+    tailRight,
+    tailLeft
 };
 
 struct Cell {
@@ -31,6 +52,8 @@ public:
 
 private:
     void loadTextures();
+    QPixmap loadTexture(QString path);
+    QPixmap loadTextureWithTurn(int turn, QPixmap baseImage);
     QMap<TypeCell, QPixmap> textures;
     std::shared_ptr<spdlog::logger> logger;
     QVector<QVector<Cell>> board;

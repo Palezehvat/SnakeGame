@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     connect(menu.get(), &nMenu::Menu::switchToSettings, this, &MainWindow::switchToSettings);
     connect(settings.get(), &nSettings::Settings::switchToMenu, this, &MainWindow::switchToMenu);
     connect(menu.get(), &nMenu::Menu::switchToGame, this, &MainWindow::switchToGame);
+    connect(controller.get(), &nGameController::GameController::gameOver, this, &MainWindow::onGameOver);
     logger->info("Класс MainWindow успешно инициализирован");
 }
 
@@ -40,10 +41,25 @@ void MainWindow::switchToGame() {
     if (!boardAdded) {
         stackedWidget->addWidget(board.get());
         boardAdded = true;
+
+        connect(board.get(), &nGameView::GameView::backToMenu,
+            this, &MainWindow::switchToMenuFromGame);
+
+        connect(board.get(), &nGameView::GameView::restartGame,
+            this, &MainWindow::switchToGame);
     }
 
     stackedWidget->setCurrentWidget(board.get());
     logger->info("Успешная смена окна на игру");
+}
+
+void MainWindow::onGameOver() {
+    logger->info("Получен сигнал gameOver");
+}
+
+void MainWindow::switchToMenuFromGame() {
+    stackedWidget->setCurrentWidget(menu.get());
+    logger->info("Возврат в главное меню из игры");
 }
 
 }

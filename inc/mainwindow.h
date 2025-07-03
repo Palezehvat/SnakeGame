@@ -32,6 +32,8 @@ private slots:
     void switchToSettings();
     void switchToGame();
     void switchToMenu();
+    void switchToMenuFromGame();
+    void onGameOver();
 };
 
 };
