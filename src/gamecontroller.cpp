@@ -37,8 +37,18 @@ namespace nGameController {
 
     void GameController::spawnFood() {
         std::vector<QPoint> emptyCells = gameBoard->getEmptyCells();
-        if (!emptyCells.empty()) {
-            food->respawn(emptyCells);
+        
+        const auto& snakeBody = snake->getBody();
+        
+        std::vector<QPoint> trulyEmptyCells;
+        std::copy_if(emptyCells.begin(), emptyCells.end(), std::back_inserter(trulyEmptyCells),
+            [&snakeBody](const QPoint& cell) {
+                // Копируем клетку, только если она не найдена в теле змеи
+                return std::find(snakeBody.begin(), snakeBody.end(), cell) == snakeBody.end();
+            });
+
+        if (!trulyEmptyCells.empty()) {
+            food->respawn(trulyEmptyCells);
             std::optional<QPoint> pos = food->getPosition();
             if (pos.has_value()) {
                 QPoint valuePos = pos.value();
@@ -48,15 +58,13 @@ namespace nGameController {
                 logger->error("Не удалось создать еду в GameController");
             }
         } else {
-            // Игра завершилась
+            // Тут обработать победу в игре, когда вся карта заполнена
         }
     }
 
-    void  GameController::update() {
+    void GameController::update() {
         lastMoveTime = QDateTime::currentMSecsSinceEpoch();
-        board->setLastMoveTime(lastMoveTime); // Устанавливаем, когда был последний запуск
-        
-        nSnake::Movement currentDirection = snake->getCurrentDirection();
+        board->setLastMoveTime(lastMoveTime);
         
         QPoint headPosition = snake->move();
         
@@ -66,32 +74,17 @@ namespace nGameController {
             emit gameOver();
             return;
         }
-
+    
         const nGameBoard::Cell& positionWhereSnake = gameBoard->getCell(headPosition.x(),
-        headPosition.y());
-        if (positionWhereSnake.type == nGameBoard::TypeCell::food) { // Проверка, что змея съела еду
+         headPosition.y());
+        
+         if (positionWhereSnake.type == nGameBoard::TypeCell::food) {
+            gameBoard->setCell(headPosition.x(), headPosition.y(), nGameBoard::TypeCell::grass);
             snake->grow();
-            const std::vector<QPoint>& freeCells = gameBoard->getEmptyCells();
-            auto position = food->clear();
-            if (position.has_value()) {
-                gameBoard->setCell(position.value().x(), position.value().y(),
-                nGameBoard::TypeCell::grass);
-                food->respawn(freeCells);
-                std::optional<QPoint> pos = food->getPosition();
-                if (pos.has_value()) {
-                    QPoint valuePos = pos.value();
-                    gameBoard->setCell(valuePos.x(), valuePos.y(), nGameBoard::TypeCell::food);
-                    logger->info("Информация о создании еды в клетке успешно передана в GameBoard");
-                } else {
-                    logger->error("Не удалось создать еду в GameController");
-                }
-            } else {
-
-            }
+            spawnFood();
         }
         
         board->update();
-        logger->info("Пройдён update");
     }
 
     void GameController::changeDirection(nSnake::Movement newDirection) {
