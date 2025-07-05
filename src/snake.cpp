@@ -98,19 +98,23 @@ namespace nSnake {
     std::vector<QPointF> Snake::getInterpolatedBody(qreal t) {
         std::vector<QPointF> result;
         
-        if (currBody.size() != prevBody.size()) {
-            for (const auto& segment : currBody) {
-                result.push_back(QPointF(segment));
+        if (currBody.size() > prevBody.size()) {
+            result.push_back(prevBody.front() * (1.0 - t) + currBody.front() * t);
+
+            for (size_t i = 1; i < currBody.size(); ++i) {
+                QPointF start = prevBody[i - 1];
+                QPointF end = currBody[i];
+                result.push_back(start * (1.0 - t) + end * t);
             }
-            return result;
+        } else {
+            for (size_t i = 0; i < currBody.size(); ++i) {
+                QPointF start = prevBody[i];
+                QPointF end = currBody[i];
+                QPointF interpolated = start * (1.0 - t) + end * t;
+                result.push_back(interpolated);
+            }
         }
     
-        for (size_t i = 0; i < currBody.size(); ++i) {
-            QPointF start = prevBody[i];
-            QPointF end = currBody[i];
-            QPointF interpolated = start * (1.0 - t) + end * t;
-            result.push_back(interpolated);
-        }
         return result;
     }
 
