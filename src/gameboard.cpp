@@ -40,9 +40,9 @@ namespace nGameBoard {
         QPixmap bodyRight = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-body-angle-right.png");
         textures.insert(TypeCell::bodyRight, bodyRight);
-        textures.insert(TypeCell::bodyUp, loadTextureWithTurn(90, bodyRight));
+        textures.insert(TypeCell::bodyDown, loadTextureWithTurn(90, bodyRight));
         textures.insert(TypeCell::bodyLeft, loadTextureWithTurn(180, bodyRight));
-        textures.insert(TypeCell::bodyDown, loadTextureWithTurn(270, bodyRight));
+        textures.insert(TypeCell::bodyUp, loadTextureWithTurn(270, bodyRight));
 
         QPixmap headUp = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-head-up.png");

@@ -90,23 +90,39 @@ namespace nGameView {
                 else if (tailDir.x() < 0) type = nGameBoard::tailLeft;
                 else if (tailDir.y() > 0) type = nGameBoard::tailUp;
                 else type = nGameBoard::tailDown;
-            } else { // Тело
+            } else {
                 QPoint dirFromPrev = body[i] - body[i-1];
                 QPoint dirToNext = body[i+1] - body[i];
+
+                
+                if (dirFromPrev == dirToNext) {
+                    type = (dirFromPrev.x() != 0) ? nGameBoard::bodyHorizontal : nGameBoard::bodyVertical;
+                } else {
+                    bool fromUp = (dirFromPrev.y() > 0);
+                    bool fromDown = (dirFromPrev.y() < 0);
+                    bool fromLeft = (dirFromPrev.x() > 0);
+                    bool fromRight = (dirFromPrev.x() < 0);
     
-                if (body[i+1].x() == body[i].x() && body[i].x() == body[i+1].x()) { // Прямой вертикальный
-                    type = nGameBoard::bodyVertical;
-                } else if (body[i+1].y() == body[i].y() && body[i].y() == body[i+1].y()) { // Прямой горизонтальный
-                    type = nGameBoard::bodyHorizontal;
-                } else { // Угловой
-                    if ((dirFromPrev.y() < 0 && dirToNext.x() > 0) || (dirFromPrev.x() > 0 && dirToNext.y() < 0))
-                        type = nGameBoard::bodyUp; // от верха -> направо, или от права -> наверх
-                    else if ((dirFromPrev.y() < 0 && dirToNext.x() < 0) || (dirFromPrev.x() < 0 && dirToNext.y() < 0))
-                        type = nGameBoard::bodyLeft; // от верха -> налево, или от лева -> наверх
-                    else if ((dirFromPrev.y() > 0 && dirToNext.x() > 0) || (dirFromPrev.x() > 0 && dirToNext.y() > 0))
-                        type = nGameBoard::bodyRight; // от низа -> направо, или от права -> вниз
-                    else 
-                        type = nGameBoard::bodyDown; // от низа -> налево, или от лева -> вниз
+                    bool toUp = (dirToNext.y() < 0);
+                    bool toDown = (dirToNext.y() > 0);
+                    bool toLeft = (dirToNext.x() < 0);
+                    bool toRight = (dirToNext.x() > 0);
+
+
+    
+                    if ((fromDown && toRight) || (fromRight && toDown)) {
+                        // Форма угла: ┌
+                        type = nGameBoard::bodyRight; 
+                    } else if ((fromDown && toLeft) || (fromLeft && toDown)) {
+                        // Форма угла: ┐
+                        type = nGameBoard::bodyDown;
+                    } else if ((fromUp && toLeft) || (fromLeft && toUp)) {
+                        // Форма угла: ┘
+                        type = nGameBoard::bodyLeft;
+                    } else { // (fromUp && toRight) || (fromRight && toUp)
+                        // Форма угла: └
+                        type = nGameBoard::bodyUp;
+                    }
                 }
             }
             
