@@ -47,9 +47,9 @@ namespace nGameBoard {
         QPixmap headUp = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-head-up.png");
         textures.insert(TypeCell::headUp, headUp);
-        textures.insert(TypeCell::headLeft, loadTextureWithTurn(90, headUp));
+        textures.insert(TypeCell::headRight, loadTextureWithTurn(90, headUp));
         textures.insert(TypeCell::headDown, loadTextureWithTurn(180, headUp));
-        textures.insert(TypeCell::headRight, loadTextureWithTurn(270, headUp));
+        textures.insert(TypeCell::headLeft, loadTextureWithTurn(270, headUp));
 
         QPixmap headTurnRight = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-head-angle-right.png");
@@ -58,12 +58,12 @@ namespace nGameBoard {
         textures.insert(TypeCell::headTurnLeft, loadTextureWithTurn(180, headTurnRight));
         textures.insert(TypeCell::headTurnDown, loadTextureWithTurn(270, headTurnRight));
 
-        QPixmap tailUp = loadTexture(QCoreApplication::applicationDirPath()
+        QPixmap tailDown = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-tail-up.png");
-        textures.insert(TypeCell::tailUp, tailUp);
-        textures.insert(TypeCell::tailLeft, loadTextureWithTurn(90, tailUp));
-        textures.insert(TypeCell::tailDown, loadTextureWithTurn(180, tailUp));
-        textures.insert(TypeCell::tailRight, loadTextureWithTurn(270, tailUp));
+        textures.insert(TypeCell::tailDown, tailDown);
+        textures.insert(TypeCell::tailLeft, loadTextureWithTurn(90, tailDown));
+        textures.insert(TypeCell::tailUp, loadTextureWithTurn(180, tailDown));
+        textures.insert(TypeCell::tailRight, loadTextureWithTurn(270, tailDown));
 
         QPixmap tailTurnRight = loadTexture(QCoreApplication::applicationDirPath()
                             + "/../images/snake/snake-tail-angle-right.png");

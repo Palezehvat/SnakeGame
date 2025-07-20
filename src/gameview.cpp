@@ -80,16 +80,16 @@ namespace nGameView {
     
             if (i == segmentCount - 1) { // Голова
                 QPoint headDir = (segmentCount > 1) ? (body[i] - body[i-1]) : QPoint(1, 0);
-                if (headDir.x() > 0) type = nGameBoard::headLeft;
-                else if (headDir.x() < 0) type = nGameBoard::headRight;
+                if (headDir.x() > 0) type = nGameBoard::headRight;
+                else if (headDir.x() < 0) type = nGameBoard::headLeft;
                 else if (headDir.y() > 0) type = nGameBoard::headDown;
                 else type = nGameBoard::headUp;
             } else if (i == 0) { // Хвост
                 QPoint tailDir = body[i+1] - body[i]; // Направление от хвоста к следующему сегменту
                 if (tailDir.x() > 0) type = nGameBoard::tailRight;
                 else if (tailDir.x() < 0) type = nGameBoard::tailLeft;
-                else if (tailDir.y() > 0) type = nGameBoard::tailUp;
-                else type = nGameBoard::tailDown;
+                else if (tailDir.y() > 0) type = nGameBoard::tailDown;
+                else type = nGameBoard::tailUp;
             } else {
                 QPoint dirFromPrev = body[i] - body[i-1];
                 QPoint dirToNext = body[i+1] - body[i];
