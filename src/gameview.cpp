@@ -61,7 +61,6 @@ namespace nGameView {
         if (body.empty()) {
             return;
         }
-    
         nSnake::Movement currentDirection = snake->getCurrentDirection();
 
         qreal t = (qreal)(QDateTime::currentMSecsSinceEpoch() - lastMoveTime) / gameUpdateIntervalForAnimation;
@@ -71,69 +70,46 @@ namespace nGameView {
         if (interpolatedBody.size() != body.size()) { // Проверка на случай ошибки интерполяции
             return;
         }
-    
-        const auto& textures = gameboard->getTextures();
-        const int segmentCount = body.size();
-    
-        for (int i = 0; i < segmentCount; ++i) {
-            nGameBoard::TypeCell type;
-    
-            if (i == segmentCount - 1) { // Голова
-                QPoint headDir = (segmentCount > 1) ? (body[i] - body[i-1]) : QPoint(1, 0);
-                if (headDir.x() > 0) type = nGameBoard::headRight;
-                else if (headDir.x() < 0) type = nGameBoard::headLeft;
-                else if (headDir.y() > 0) type = nGameBoard::headDown;
-                else type = nGameBoard::headUp;
-            } else if (i == 0) { // Хвост
-                QPoint tailDir = body[i+1] - body[i]; // Направление от хвоста к следующему сегменту
-                if (tailDir.x() > 0) type = nGameBoard::tailRight;
-                else if (tailDir.x() < 0) type = nGameBoard::tailLeft;
-                else if (tailDir.y() > 0) type = nGameBoard::tailDown;
-                else type = nGameBoard::tailUp;
-            } else {
-                QPoint dirFromPrev = body[i] - body[i-1];
-                QPoint dirToNext = body[i+1] - body[i];
 
-                
-                if (dirFromPrev == dirToNext) {
-                    type = (dirFromPrev.x() != 0) ? nGameBoard::bodyHorizontal : nGameBoard::bodyVertical;
-                } else {
-                    bool fromUp = (dirFromPrev.y() > 0);
-                    bool fromDown = (dirFromPrev.y() < 0);
-                    bool fromLeft = (dirFromPrev.x() > 0);
-                    bool fromRight = (dirFromPrev.x() < 0);
-    
-                    bool toUp = (dirToNext.y() < 0);
-                    bool toDown = (dirToNext.y() > 0);
-                    bool toLeft = (dirToNext.x() < 0);
-                    bool toRight = (dirToNext.x() > 0);
+        QPen snakePen(Qt::green); // Рисуем тело
+        snakePen.setWidth(sizeCell * 0.8);
+        snakePen.setCapStyle(Qt::RoundCap); // Скруглённые концы
+        snakePen.setJoinStyle(Qt::RoundJoin); // Скруглённые углы
+        painter.setPen(snakePen);
 
+        QPainterPath snakePath;
+        if (!interpolatedBody.empty()) {
+            QPointF firstPoint(
+                interpolatedBody[0].x() * sizeCell + sizeCell / 2,
+                interpolatedBody[0].y() * sizeCell + sizeCell / 2
+            );
+            snakePath.moveTo(firstPoint);
 
-    
-                    if ((fromDown && toRight) || (fromRight && toDown)) {
-                        // Форма угла: ┌
-                        type = nGameBoard::bodyRight; 
-                    } else if ((fromDown && toLeft) || (fromLeft && toDown)) {
-                        // Форма угла: ┐
-                        type = nGameBoard::bodyDown;
-                    } else if ((fromUp && toLeft) || (fromLeft && toUp)) {
-                        // Форма угла: ┘
-                        type = nGameBoard::bodyLeft;
-                    } else { // (fromUp && toRight) || (fromRight && toUp)
-                        // Форма угла: └
-                        type = nGameBoard::bodyUp;
-                    }
-                }
+            for (int i = 1; i < interpolatedBody.size() - 1; ++i) {
+                QPointF p0(
+                    interpolatedBody[i].x() * sizeCell + sizeCell / 2,
+                    interpolatedBody[i].y() * sizeCell + sizeCell / 2
+                );
+                QPointF p1(
+                    interpolatedBody[i + 1].x() * sizeCell + sizeCell / 2,
+                    interpolatedBody[i + 1].y() * sizeCell + sizeCell / 2
+                );
+
+                QPointF controlPoint = (p0 + p1) / 2.0;
+
+                snakePath.quadTo(p0, controlPoint);
             }
-            
-            // --- Логика отрисовки ---
-            QPointF currentPos = interpolatedBody[i];
-            QRectF targetRect(currentPos.x() * sizeCell, currentPos.y() * sizeCell, sizeCell, sizeCell);
-    
-            painter.drawPixmap(targetRect.toRect(), textures.value(type));
-        }
-    }
 
+            // Добавляем хвост
+            QPointF lastPoint(
+                interpolatedBody.back().x() * sizeCell + sizeCell / 2,
+                interpolatedBody.back().y() * sizeCell + sizeCell / 2
+            );
+            snakePath.lineTo(lastPoint);
+        }
+
+        painter.drawPath(snakePath);
+    }
 
     void GameView::paintEvent(QPaintEvent*) {
         //logger->info("Начался процесс отрисовки доски");

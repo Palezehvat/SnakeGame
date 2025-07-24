@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QPainterPath>
 #include <iostream>
 #include "settings.h"
 #include "logger.h"
