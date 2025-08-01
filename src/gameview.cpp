@@ -8,23 +8,11 @@ namespace nGameView {
         numberOfCellsLength = length;
         numberOfCellsWidth = width;
         this->controller = controller;
-        this->sizeCell = sizeCell;
+        this->sizeCell = 40;
         this->gameUpdateIntervalForAnimation = gameUpdateInterval;
 
-        QPushButton* restartButton = new QPushButton("Начать заново", this);
-        QPushButton* menuButton = new QPushButton("В меню", this);
-
-        restartButton->move(200, 100);
-        menuButton->move(200, 200);
-
-        restartButton->hide();
-        menuButton->hide();
-
-        connect(restartButton, &QPushButton::clicked, this, &GameView::restartGame);
-        connect(menuButton, &QPushButton::clicked, this, &GameView::backToMenu);
-
-        this->restartButton = restartButton;
-        this->menuButton = menuButton;
+        setFocusPolicy(Qt::StrongFocus); // Чтобы нажатия клавиш регистрировало
+        setFocus();
 
         frameTimer = new QTimer(this);
         connect(frameTimer, &QTimer::timeout, this, QOverload<>::of(&GameView::update));
@@ -114,6 +102,18 @@ namespace nGameView {
     void GameView::paintEvent(QPaintEvent*) {
         //logger->info("Начался процесс отрисовки доски");
         QPainter p(this);
+        p.fillRect(rect(), Qt::black);
+
+        int boardWidth = numberOfCellsWidth * sizeCell;
+        int boardHeight = numberOfCellsLength * sizeCell;
+
+        int offsetX = (width() - boardWidth) / 2;
+        int offsetY = (height() - boardHeight) / 2;
+
+        p.translate(offsetX, offsetY);
+
+        QRect boardRect(0, 0, numberOfCellsWidth * sizeCell, numberOfCellsLength * sizeCell);
+        p.setClipRect(boardRect);
         drawBoard(p);
         if (food) {
             //logger->info("Начался процесс отрисовки еды");
@@ -128,15 +128,20 @@ namespace nGameView {
     }
 
     void GameView::resizeEvent(QResizeEvent* event) {
-        int w = this->width();
-        int h = this->height();
+        int w = event->size().width();
+        int h = event->size().height();
         sizeCell = std::min(w / numberOfCellsWidth, h / numberOfCellsLength);
+    
         update();
         logger->info("Размер игрового окна в GameView успешно изменён");
     }
 
+    QSize GameView::minimumSizeHint() const {
+        return QSize(numberOfCellsWidth * sizeCell, numberOfCellsLength * sizeCell);
+    }
+    
     QSize GameView::sizeHint() const {
-        return QSize(400, 400);
+        return minimumSizeHint();
     }
 
     void GameView::setGameBoard(std::shared_ptr<nGameBoard::GameBoard> board) {
@@ -153,11 +158,6 @@ namespace nGameView {
 
     void GameView::setLastMoveTime(qint64 lastMoveTime) {
         this->lastMoveTime = lastMoveTime;
-    }
-
-    void GameView::showGameOverScreen() {
-        restartButton->show();
-        menuButton->show();
     }
 
     void GameView::keyPressEvent(QKeyEvent* event) {
@@ -178,4 +178,12 @@ namespace nGameView {
                 QWidget::keyPressEvent(event);
         }
     }
+
+    int GameView::getPreferredWidth() const {
+        return numberOfCellsWidth * sizeCell;
+    }
+    
+    int GameView::getPreferredHeight() const {
+        return numberOfCellsLength * sizeCell;
+    }    
 };

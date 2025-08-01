@@ -12,8 +12,9 @@ namespace nGameController {
         logger->info("Класс GameController успешно инициализирован");
     }
 
-    void GameController::startGame() {
+    std::shared_ptr<nGamePanel::GamePanel> GameController::startGame() {
         initBoard();
+        score = std::make_shared<nScore::Score>();
         food = std::make_shared<nFood::Food>(numberOfCellsLength, numberOfCellsWidth);
         snake = std::make_shared<nSnake::Snake>(numberOfCellsLength, numberOfCellsWidth);
         spawnFood();
@@ -21,10 +22,8 @@ namespace nGameController {
         board->setSnake(snake);
         gameTimer->start();
         logger->info("GameController успешно начал игру");
-    }
-
-    std::shared_ptr<nGameView::GameView> GameController::getBoard(){
-        return board;
+        panel = std::make_shared<nGamePanel::GamePanel>(board, score);
+        return panel;
     }
 
     void GameController::initBoard() {
@@ -70,7 +69,7 @@ namespace nGameController {
         
         if (snake->checkCollusion()) {
             isGameOver = true;
-            board->showGameOverScreen();
+            panel->showGameOverScreen();
             emit gameOver();
             return;
         }
@@ -79,6 +78,7 @@ namespace nGameController {
          headPosition.y());
         
          if (positionWhereSnake.type == nGameBoard::TypeCell::food) {
+            score->updateCounter();
             gameBoard->setCell(headPosition.x(), headPosition.y(), nGameBoard::TypeCell::grass);
             snake->grow();
             spawnFood();

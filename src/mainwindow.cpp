@@ -35,21 +35,24 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToGame() {
-    controller->startGame();
-    board = controller->getBoard();
+    panel = controller->startGame();
 
-    if (!boardAdded) {
-        stackedWidget->addWidget(board.get());
-        boardAdded = true;
+    if (!gameStarted) {
+        stackedWidget->addWidget(panel.get());
+        gameStarted = true;
 
-        connect(board.get(), &nGameView::GameView::backToMenu,
+        connect(panel.get(), &nGamePanel::GamePanel::backToMenu,
             this, &MainWindow::switchToMenuFromGame);
 
-        connect(board.get(), &nGameView::GameView::restartGame,
+        connect(panel.get(), &nGamePanel::GamePanel::restartGame,
             this, &MainWindow::switchToGame);
     }
+    stackedWidget->setCurrentWidget(panel.get());
+    int gameWidth = panel->getBoard()->getPreferredWidth();
+    int gameHeight = panel->getBoard()->getPreferredHeight();
 
-    stackedWidget->setCurrentWidget(board.get());
+    int windowWidth = gameWidth * 4 / 3;
+    this->resize(windowWidth, gameHeight);
     logger->info("Успешная смена окна на игру");
 }
 
@@ -61,5 +64,10 @@ void MainWindow::switchToMenuFromGame() {
     stackedWidget->setCurrentWidget(menu.get());
     logger->info("Возврат в главное меню из игры");
 }
+
+//void MainWindow::resizeEvent(QResizeEvent* event) {
+//    int side = std::min(event->size().width(), event->size().height());
+//    resize(side, side);
+//}
 
 }

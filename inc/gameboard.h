@@ -11,28 +11,7 @@ namespace nGameBoard{
 enum TypeCell {
     grass,
     food,
-    bodyVertical,
-    bodyHorizontal,
-    bodyRight,
-    bodyLeft,
-    bodyUp,
-    bodyDown,
-    headUp,
-    headDown,
-    headLeft,
-    headRight,
-    headTurnUp,
-    headTurnDown,
-    headTurnRight,
-    headTurnLeft,
-    tailTurnUp,
-    tailTurnDown,
-    tailTurnRight,
-    tailTurnLeft,
-    tailUp,
-    tailDown,
-    tailRight,
-    tailLeft
+    snake
 };
 
 struct Cell {

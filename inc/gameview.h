@@ -18,7 +18,7 @@ namespace nGameController {
     class GameController;
 }
 
-namespace nGameView{
+namespace nGameView {
 
 class GameView : public QWidget {
     Q_OBJECT
@@ -30,7 +30,8 @@ public:
     void setFood(std::shared_ptr<nFood::Food> food);
     void setSnake(std::shared_ptr<nSnake::Snake> snake);
     void setLastMoveTime(qint64 lastMoveTime);
-    void showGameOverScreen();
+    int getPreferredWidth() const;
+    int getPreferredHeight() const;
 
 private:
     int sizeCell;
@@ -41,8 +42,6 @@ private:
     std::shared_ptr<nFood::Food> food;
     std::shared_ptr<nSnake::Snake> snake;
     nGameController::GameController* controller;
-    QPushButton* restartButton = nullptr;
-    QPushButton* menuButton = nullptr;
     QTimer* frameTimer = nullptr;
     qint64 lastMoveTime = 0;
     int gameUpdateIntervalForAnimation;
@@ -54,10 +53,7 @@ private:
     void drawSnake(QPainter& p);
     void keyPressEvent(QKeyEvent* event);
     QSize sizeHint() const override;
-
-signals:
-    void backToMenu();
-    void restartGame(); // Реализовать
+    QSize minimumSizeHint() const;
 };
 
 }; // nGameBoard

@@ -8,7 +8,7 @@
 #include "logger.h"
 #include "settings.h"
 #include "mainmenu.h"
-#include "gameview.h"
+#include "gamepanel.h"
 
 
 namespace nMainWindow {
@@ -25,8 +25,10 @@ private:
     std::shared_ptr<nMenu::Menu> menu = nullptr;
     std::shared_ptr<nSettings::Settings> settings = nullptr;
     std::shared_ptr<nGameController::GameController> controller = nullptr;
-    std::shared_ptr<nGameView::GameView> board = nullptr;
-    bool boardAdded = false;
+    std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
+    bool gameStarted = false;
+
+    //void resizeEvent(QResizeEvent* event);
 
 private slots:
     void switchToSettings();

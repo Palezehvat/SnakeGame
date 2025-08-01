@@ -9,6 +9,8 @@
 #include "snake.h"
 #include "logger.h"
 #include "gameview.h" 
+#include "score.h"
+#include "gamepanel.h"
 
 namespace nGameView {
     class GameView;
@@ -21,16 +23,17 @@ class GameController : public QObject {
 
 public:
     explicit GameController(QObject* parent = nullptr);
-    void startGame();
+    std::shared_ptr<nGamePanel::GamePanel> startGame();
     void update();
-    std::shared_ptr<nGameView::GameView> getBoard();
     void changeDirection(nSnake::Movement newDirection);
 private:
     std::shared_ptr<nGameBoard::GameBoard> gameBoard = nullptr;
     std::shared_ptr<spdlog::logger> logger;
-    std::shared_ptr<nGameView::GameView> board = nullptr;
     std::shared_ptr<nSnake::Snake> snake = nullptr;
     std::shared_ptr<nFood::Food> food = nullptr;
+    std::shared_ptr<nGameView::GameView> board = nullptr;
+    std::shared_ptr<nScore::Score> score = nullptr;
+    std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
 
     bool isGameOver = false;
 
