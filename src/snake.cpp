@@ -95,6 +95,10 @@ namespace nSnake {
         return prevBody;
     }
 
+    QPoint Snake::getNextHeadPosition() const {
+        return partMove(currBody.back(), nextDirection);
+    }
+
     std::vector<QPointF> Snake::getInterpolatedBody(qreal t) {
         std::vector<QPointF> result;
         

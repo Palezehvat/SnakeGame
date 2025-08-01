@@ -1,4 +1,5 @@
 #include "gamecontroller.h"
+#include <iostream>
 
 namespace nGameController {
     GameController::GameController(QObject* parent) {
@@ -57,7 +58,7 @@ namespace nGameController {
                 logger->error("Не удалось создать еду в GameController");
             }
         } else {
-            // Тут обработать победу в игре, когда вся карта заполнена
+            gameTimer->stop();
         }
     }
 
@@ -65,15 +66,32 @@ namespace nGameController {
         lastMoveTime = QDateTime::currentMSecsSinceEpoch();
         board->setLastMoveTime(lastMoveTime);
         
-        QPoint headPosition = snake->move();
+        QPoint headPositionAfterMove = snake->getNextHeadPosition();
+
+        bool collusion = false;
+
+        if (headPositionAfterMove.x() < 0 || headPositionAfterMove.x() >= numberOfCellsWidth ||
+            headPositionAfterMove.y() < 0 || headPositionAfterMove.y() >= numberOfCellsLength) {
+            collusion = true; // Вышла за пределы поля
+        } else {
+            const std::vector<QPoint> currBody = snake->getBody();
+            for(auto partSnake : currBody) {
+                if (partSnake == headPositionAfterMove && headPositionAfterMove != currBody[0]) {
+                    collusion = true; // Врезалась в себя
+                }
+            }
+        }
         
-        if (snake->checkCollusion()) {
-            isGameOver = true;
+        if (collusion) {
             panel->showGameOverScreen();
+            gameTimer->stop();
             emit gameOver();
+            board->stopAnimation();
             return;
         }
-    
+        
+        QPoint headPosition = snake->move();
+        
         const nGameBoard::Cell& positionWhereSnake = gameBoard->getCell(headPosition.x(),
          headPosition.y());
         

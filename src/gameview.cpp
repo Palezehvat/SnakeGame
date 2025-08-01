@@ -17,8 +17,14 @@ namespace nGameView {
         frameTimer = new QTimer(this);
         connect(frameTimer, &QTimer::timeout, this, QOverload<>::of(&GameView::update));
         frameTimer->start(16);
-
+        animationFrozen = false;
         logger->info("Класс GameView успешно инициализирован");
+    }
+
+    void GameView::stopAnimation() {
+        frameTimer->stop();
+        animationFrozen = true;
+        update();
     }
 
     void GameView::drawFood(QPainter& p) {
@@ -51,7 +57,9 @@ namespace nGameView {
         }
         nSnake::Movement currentDirection = snake->getCurrentDirection();
 
-        qreal t = (qreal)(QDateTime::currentMSecsSinceEpoch() - lastMoveTime) / gameUpdateIntervalForAnimation;
+        qreal t = animationFrozen ? 1.0 : (qreal)(QDateTime::currentMSecsSinceEpoch() -
+                                            lastMoveTime) / gameUpdateIntervalForAnimation;
+        
         if (t > 1.0) t = 1.0;
         
         auto interpolatedBody = snake->getInterpolatedBody(t);

@@ -29,6 +29,7 @@ public:
     std::vector<QPointF> getInterpolatedBody(qreal t);
     const Movement getCurrentDirection() const;
     const Movement getPreviousDirection() const;
+    QPoint getNextHeadPosition() const;
 
 private:
     bool checkCollusionWalls() const;

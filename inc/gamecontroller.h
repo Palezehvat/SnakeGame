@@ -35,8 +35,6 @@ private:
     std::shared_ptr<nScore::Score> score = nullptr;
     std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
 
-    bool isGameOver = false;
-
     int numberOfCellsLength;
     int numberOfCellsWidth;
 

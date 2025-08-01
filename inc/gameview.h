@@ -32,9 +32,11 @@ public:
     void setLastMoveTime(qint64 lastMoveTime);
     int getPreferredWidth() const;
     int getPreferredHeight() const;
+    void stopAnimation();
 
 private:
     int sizeCell;
+    bool animationFrozen;
     int numberOfCellsLength;
     int numberOfCellsWidth;
     std::shared_ptr<spdlog::logger> logger;
