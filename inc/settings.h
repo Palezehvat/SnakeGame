@@ -16,12 +16,14 @@ public:
     Settings(QWidget* parent = nullptr);
     static int getLength();
     static int getWidth();
+    static int getSizeCell();
 
 private:
     std::shared_ptr<spdlog::logger> logger;
     void resizeEvent(QResizeEvent* event) override;
     static int length;
     static int width;
+    static int sizeCell;
 
 signals:
     void switchToMenu();

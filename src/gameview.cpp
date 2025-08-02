@@ -8,7 +8,7 @@ namespace nGameView {
         numberOfCellsLength = length;
         numberOfCellsWidth = width;
         this->controller = controller;
-        this->sizeCell = 40;
+        this->sizeCell = nSettings::Settings::getSizeCell();
         this->gameUpdateIntervalForAnimation = gameUpdateInterval;
 
         setFocusPolicy(Qt::StrongFocus); // Чтобы нажатия клавиш регистрировало

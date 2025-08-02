@@ -4,12 +4,20 @@ namespace nMainWindow {
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     logger = Log::Logger::getLogger();
-    this->resize(400, 300);
+    
     stackedWidget = new QStackedWidget();
     setCentralWidget(stackedWidget);
     menu = std::make_shared<nMenu::Menu>();
     settings = std::make_shared<nSettings::Settings>();
     controller = std::make_shared<nGameController::GameController>();
+    
+    int sizeCell = settings->getSizeCell();
+    int gameWidth = settings->getWidth() * sizeCell;
+    int gameHeight = settings->getLength() * sizeCell;
+    int windowWidth = gameWidth * 4 / 3;
+
+    this->resize(windowWidth, gameHeight);
+
     firstGame = false;
     numberOfStartedGames = 0;
 
