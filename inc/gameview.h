@@ -33,6 +33,7 @@ public:
     int getPreferredWidth() const;
     int getPreferredHeight() const;
     void stopAnimation();
+    void restart(int width, int length);
 
 private:
     int sizeCell;

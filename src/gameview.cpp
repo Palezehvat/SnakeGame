@@ -193,5 +193,12 @@ namespace nGameView {
     
     int GameView::getPreferredHeight() const {
         return numberOfCellsLength * sizeCell;
-    }    
+    }
+
+    void GameView::restart(int width, int length) {
+        numberOfCellsLength = length;
+        numberOfCellsWidth = width;
+        frameTimer->start(16);
+        animationFrozen = false;
+    }
 };

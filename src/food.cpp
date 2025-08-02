@@ -1,10 +1,7 @@
 #include "food.h"
 
 namespace nFood {
-    Food::Food(int length, int width) {
-        numberOfCellsLength = length;
-        numberOfCellsWidth = width;
-
+    Food::Food() {
         logger = Log::Logger::getLogger();
         logger->info("Класс Food успешно инициализирован");
     }
@@ -30,5 +27,9 @@ namespace nFood {
 
     std::optional<QPoint> Food::getPosition() const {
         return position;
+    }
+
+    void Food::restart() {
+        clear();
     }
 }

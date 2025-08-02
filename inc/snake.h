@@ -28,8 +28,8 @@ public:
     const std::vector<QPoint> getPrevBody() const;
     std::vector<QPointF> getInterpolatedBody(qreal t);
     const Movement getCurrentDirection() const;
-    const Movement getPreviousDirection() const;
     QPoint getNextHeadPosition() const;
+    void restart(int width, int length);
 
 private:
     bool checkCollusionWalls() const;
@@ -37,7 +37,6 @@ private:
 
     std::shared_ptr<spdlog::logger> logger;
     
-    Movement previousDirection;
     Movement currentDirection;
     Movement nextDirection;
     

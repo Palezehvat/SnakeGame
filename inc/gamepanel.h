@@ -21,6 +21,7 @@ public:
               std::shared_ptr<nScore::Score> score, QWidget* parent = nullptr);
     void showGameOverScreen();
     std::shared_ptr<nGameView::GameView> getBoard() const;
+    void restart();
 
 private:
     std::shared_ptr<spdlog::logger> logger;

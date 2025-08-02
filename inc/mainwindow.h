@@ -26,16 +26,17 @@ private:
     std::shared_ptr<nSettings::Settings> settings = nullptr;
     std::shared_ptr<nGameController::GameController> controller = nullptr;
     std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
-    bool gameStarted = false;
-
-    //void resizeEvent(QResizeEvent* event);
+    bool firstGame;
+    unsigned long long numberOfStartedGames;
 
 private slots:
     void switchToSettings();
     void switchToGame();
     void switchToMenu();
     void switchToMenuFromGame();
+    void restartGame();
     void onGameOver();
+
 };
 
 };

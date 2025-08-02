@@ -21,4 +21,9 @@ namespace nScore {
         ++counter;
         score->setText(QString::number(counter));
     }
+
+    void Score::restart() {
+        counter = 0;
+        score->setText(QString::number(counter));
+    }
 };

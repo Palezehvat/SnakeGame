@@ -20,8 +20,6 @@ namespace nGamePanel {
         layout->setStretch(0, 3);
         layout->setStretch(1, 1);
 
-
-
         restartButton = new QPushButton("Начать заново", this);
         menuButton = new QPushButton("В меню", this);
 
@@ -42,5 +40,10 @@ namespace nGamePanel {
 
     std::shared_ptr<nGameView::GameView> GamePanel::getBoard() const {
         return board;
+    }
+
+    void GamePanel::restart() {
+        restartButton->hide();
+        menuButton->hide();
     }
 };

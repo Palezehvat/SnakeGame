@@ -72,4 +72,10 @@ namespace nGameBoard {
     const QMap<TypeCell, QPixmap>& GameBoard::getTextures() {
         return textures;
     }
+
+    void GameBoard::restart(int width, int length) {
+        numberOfCellsLength = length;
+        numberOfCellsWidth = width;
+        createBoard();
+    }
 }

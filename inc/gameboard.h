@@ -28,6 +28,7 @@ public:
     const QMap<TypeCell, QPixmap>& getTextures();
     void createBoard();
     std::vector<QPoint> getEmptyCells() const;
+    void restart(int width, int length);
 
 private:
     void loadTextures();

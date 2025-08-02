@@ -16,7 +16,7 @@ namespace nGameController {
     std::shared_ptr<nGamePanel::GamePanel> GameController::startGame() {
         initBoard();
         score = std::make_shared<nScore::Score>();
-        food = std::make_shared<nFood::Food>(numberOfCellsLength, numberOfCellsWidth);
+        food = std::make_shared<nFood::Food>();
         snake = std::make_shared<nSnake::Snake>(numberOfCellsLength, numberOfCellsWidth);
         spawnFood();
         board->setFood(food);
@@ -107,6 +107,32 @@ namespace nGameController {
 
     void GameController::changeDirection(nSnake::Movement newDirection) {
         snake->setDirection(newDirection);
+    }
+
+    void GameController::restart(int width, int length) {
+        if (width != 0 && length != 0) {
+            numberOfCellsLength = length;
+            numberOfCellsWidth = width;
+        }
+
+        gameTimer->stop();
+
+        gameBoard->restart(numberOfCellsWidth, numberOfCellsLength);
+        snake->restart(numberOfCellsWidth, numberOfCellsLength);
+        food->restart();
+        spawnFood();
+
+        panel->restart();
+        score->restart();
+        board->restart(numberOfCellsWidth, numberOfCellsLength);
+
+
+        if (gameTimer->isActive()) {
+            gameTimer->stop();
+        }
+
+        gameTimer->setInterval(gameUpdateIntervalMs);
+        gameTimer->start();
     }
 
 }; // nGameController

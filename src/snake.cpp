@@ -38,7 +38,6 @@ namespace nSnake {
     }
 
     QPoint Snake::move() {
-        previousDirection = currentDirection;
         currentDirection = nextDirection;
         prevBody = currBody;
         std::optional<QPoint> removeTailPos = std::nullopt;
@@ -126,7 +125,23 @@ namespace nSnake {
         return currentDirection;
     }
 
-    const Movement Snake::getPreviousDirection() const {
-        return previousDirection;
+    void Snake::restart(int width, int length) {
+        numberOfCellsLength = length;
+        numberOfCellsWidth = width;
+        growPending = 0;
+
+        currentDirection = Right;
+        nextDirection = Right;
+
+        currBody.clear();
+        prevBody.clear();
+
+        QPoint headPosition = {numberOfCellsWidth / 2, numberOfCellsLength / 2};
+        QPoint tailPosition = {numberOfCellsWidth / 2 - 1, numberOfCellsLength / 2};
+    
+        currBody.push_back(tailPosition);
+        currBody.push_back(headPosition);
+    
+        prevBody = currBody;
     }
 } // nSnake

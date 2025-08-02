@@ -4,13 +4,14 @@ namespace nMainWindow {
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     logger = Log::Logger::getLogger();
-    this->setWindowTitle("Snake game");
     this->resize(400, 300);
     stackedWidget = new QStackedWidget();
     setCentralWidget(stackedWidget);
     menu = std::make_shared<nMenu::Menu>();
     settings = std::make_shared<nSettings::Settings>();
     controller = std::make_shared<nGameController::GameController>();
+    firstGame = false;
+    numberOfStartedGames = 0;
 
     stackedWidget->addWidget(menu.get());
     stackedWidget->addWidget(settings.get());
@@ -35,25 +36,29 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToGame() {
-    panel = controller->startGame();
-
-    if (!gameStarted) {
+    numberOfStartedGames += 1;
+    
+    if (!firstGame) {
+        panel = controller->startGame();
         stackedWidget->addWidget(panel.get());
-        gameStarted = true;
+        firstGame = true;
 
         connect(panel.get(), &nGamePanel::GamePanel::backToMenu,
             this, &MainWindow::switchToMenuFromGame);
 
         connect(panel.get(), &nGamePanel::GamePanel::restartGame,
-            this, &MainWindow::switchToGame);
+            this, &MainWindow::restartGame);
+        int gameWidth = panel->getBoard()->getPreferredWidth();
+        int gameHeight = panel->getBoard()->getPreferredHeight();
+        
+        int windowWidth = gameWidth * 4 / 3;
+        this->resize(windowWidth, gameHeight);
+    } else {
+        controller->restart();
     }
     stackedWidget->setCurrentWidget(panel.get());
-    int gameWidth = panel->getBoard()->getPreferredWidth();
-    int gameHeight = panel->getBoard()->getPreferredHeight();
-
-    int windowWidth = gameWidth * 4 / 3;
-    this->resize(windowWidth, gameHeight);
-    logger->info("Успешная смена окна на игру");
+    logger->info(fmt::format("Успешная смена окна на игру. Номер запущенной игры: {}",
+            std::to_string(numberOfStartedGames)));
 }
 
 void MainWindow::onGameOver() {
@@ -65,9 +70,10 @@ void MainWindow::switchToMenuFromGame() {
     logger->info("Возврат в главное меню из игры");
 }
 
-//void MainWindow::resizeEvent(QResizeEvent* event) {
-//    int side = std::min(event->size().width(), event->size().height());
-//    resize(side, side);
-//}
+void MainWindow::restartGame() {
+    numberOfStartedGames += 1;
+    controller->restart();
+    logger->info(fmt::format("Запуск игры номер {}", std::to_string(numberOfStartedGames)));
+}
 
 }

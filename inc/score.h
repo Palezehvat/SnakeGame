@@ -15,6 +15,7 @@ class Score : public QWidget {
 public:
     Score(QWidget* parent = nullptr);
     void updateCounter();
+    void restart();
 
 private:
     std::shared_ptr<spdlog::logger> logger;

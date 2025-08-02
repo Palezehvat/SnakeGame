@@ -25,10 +25,11 @@ public:
     explicit GameController(QObject* parent = nullptr);
     std::shared_ptr<nGamePanel::GamePanel> startGame();
     void update();
+    void restart(int width = 0, int length = 0);
     void changeDirection(nSnake::Movement newDirection);
 private:
     std::shared_ptr<nGameBoard::GameBoard> gameBoard = nullptr;
-    std::shared_ptr<spdlog::logger> logger;
+    std::shared_ptr<spdlog::logger> logger = nullptr;
     std::shared_ptr<nSnake::Snake> snake = nullptr;
     std::shared_ptr<nFood::Food> food = nullptr;
     std::shared_ptr<nGameView::GameView> board = nullptr;
