@@ -1,9 +1,10 @@
 #include "gameboard.h"
+#include <iostream>
 
 namespace nGameBoard {
     GameBoard::GameBoard() {
-        numberOfCellsLength = nSettings::Settings::getLength();
-        numberOfCellsWidth = nSettings::Settings::getWidth();
+        maximumNumberOfCellsInHeight = UISettings::maxHeight;
+        maximumNumberOfCellsInWidth = UISettings::maxWidth;
         logger = Log::Logger::getLogger();
         loadTextures();
         logger->info("Класс GameBoard успешно инициализирован");
@@ -21,31 +22,42 @@ namespace nGameBoard {
         return image;
     }
 
-    QPixmap GameBoard::loadTextureWithTurn(int turn, QPixmap baseImage) {
-        return baseImage.transformed(QTransform().rotate(turn), Qt::SmoothTransformation);
-    }
-
     void GameBoard::loadTextures() {        
         textures.insert(grass,
                 loadTexture(QCoreApplication::applicationDirPath() + "/../images/grass.jpg"));
 
         textures.insert(food,
                 loadTexture(QCoreApplication::applicationDirPath() + "/../images/apple.png"));
+
+        textures.insert(rock,
+                loadTexture(QCoreApplication::applicationDirPath() + "/../images/rock.png"));
     }
 
-    void GameBoard::createBoard() {
-        board.resize(numberOfCellsWidth);
-        for (int i = 0; i < numberOfCellsWidth; ++i) {
-            board[i].resize(numberOfCellsLength);
-            for (int j = 0; j < numberOfCellsLength; ++j) {
-                Cell cell{i, j, grass};
+    void GameBoard::createBoard(unsigned int numberOfCellsInWidth,
+                                unsigned int numberOfCellsInHeight) {
+        
+        this->numberOfCellsInWidth = numberOfCellsInWidth;
+        this->numberOfCellsInHeight = numberOfCellsInHeight;
+        
+        board.resize(maximumNumberOfCellsInWidth);
+        for (int i = 0; i < maximumNumberOfCellsInWidth; ++i) {
+            board[i].resize(maximumNumberOfCellsInHeight);
+            for (int j = 0; j < maximumNumberOfCellsInHeight; ++j) {
+                Cell cell;
+                if (i >= numberOfCellsInWidth || j >= numberOfCellsInHeight) {
+                    cell = Cell{i, j, rock};
+                } else {
+                    cell = Cell{i, j, grass};
+                }
                 board[i][j] = cell;
             }
         }
-        Cell cellHead{numberOfCellsWidth / 2, numberOfCellsLength / 2, TypeCell::snake};
-        Cell cellTail{numberOfCellsWidth / 2 - 1, numberOfCellsLength / 2, TypeCell::snake};
-        board[numberOfCellsWidth / 2][numberOfCellsLength / 2] = cellHead;
-        board[numberOfCellsWidth / 2 - 1][numberOfCellsLength / 2] = cellTail;
+
+        Cell cellHead{1, 0, TypeCell::snake};
+        Cell cellTail{0, 0, TypeCell::snake};
+        
+        board[1][0] = cellHead;
+        board[0][0] = cellTail;
         logger->info("Доска для игры успешно создана"); 
     }
 
@@ -59,8 +71,8 @@ namespace nGameBoard {
 
     std::vector<QPoint> GameBoard::getEmptyCells() const {
         std::vector<QPoint> result;
-        for (int i = 0; i < numberOfCellsWidth; ++i) {      // Цикл по ширине (X)
-            for (int j = 0; j < numberOfCellsLength; ++j) {  // Цикл по высоте (Y)
+        for (int i = 0; i < numberOfCellsInWidth; ++i) {      // Цикл по ширине (X)
+            for (int j = 0; j < numberOfCellsInHeight; ++j) {  // Цикл по высоте (Y)
                 if (board[i][j].type == TypeCell::grass) {
                     result.emplace_back(i, j);
                 }
@@ -73,9 +85,9 @@ namespace nGameBoard {
         return textures;
     }
 
-    void GameBoard::restart(int width, int length) {
-        numberOfCellsLength = length;
-        numberOfCellsWidth = width;
-        createBoard();
+    void GameBoard::restart(int width, int height) {
+        numberOfCellsInHeight = height;
+        numberOfCellsInWidth = width;
+        createBoard(numberOfCellsInWidth, numberOfCellsInHeight);
     }
 }

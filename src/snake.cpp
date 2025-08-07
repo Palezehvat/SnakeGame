@@ -1,13 +1,14 @@
 #include "snake.h"
 
 namespace nSnake {
-    Snake::Snake(int length, int width) : numberOfCellsWidth(width), numberOfCellsLength(length) {
+    Snake::Snake(unsigned int width, unsigned int height) : 
+                 numberOfCellsWidth(width), numberOfCellsHeight(height) {
         logger = Log::Logger::getLogger();
         currentDirection = Right;
         nextDirection = Right;
     
-        QPoint headPosition = {width / 2, length / 2};
-        QPoint tailPosition = {width / 2 - 1, length / 2};
+        QPoint headPosition = {1, 0};
+        QPoint tailPosition = {0, 0};
     
         currBody.push_back(tailPosition);
         currBody.push_back(headPosition);
@@ -71,7 +72,7 @@ namespace nSnake {
     bool Snake::checkCollusionWalls() const {
         const QPoint& head = currBody.back();
         return head.x() < 0 || head.x() >= numberOfCellsWidth ||
-               head.y() < 0 || head.y() >= numberOfCellsLength;
+               head.y() < 0 || head.y() >= numberOfCellsHeight;
     }
 
     bool Snake::checkCollusionBody() const {
@@ -125,8 +126,8 @@ namespace nSnake {
         return currentDirection;
     }
 
-    void Snake::restart(int width, int length) {
-        numberOfCellsLength = length;
+    void Snake::restart(unsigned int width, unsigned int height) {
+        numberOfCellsHeight = height;
         numberOfCellsWidth = width;
         growPending = 0;
 
@@ -136,8 +137,8 @@ namespace nSnake {
         currBody.clear();
         prevBody.clear();
 
-        QPoint headPosition = {numberOfCellsWidth / 2, numberOfCellsLength / 2};
-        QPoint tailPosition = {numberOfCellsWidth / 2 - 1, numberOfCellsLength / 2};
+        QPoint headPosition = {1, 0};
+        QPoint tailPosition = {0, 0};
     
         currBody.push_back(tailPosition);
         currBody.push_back(headPosition);

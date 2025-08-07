@@ -9,11 +9,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     setCentralWidget(stackedWidget);
     menu = std::make_shared<nMenu::Menu>();
     settings = std::make_shared<nSettings::Settings>();
-    controller = std::make_shared<nGameController::GameController>();
+    controller = std::make_shared<nGameController::GameController>(settings);
     
-    int sizeCell = settings->getSizeCell();
-    int gameWidth = settings->getWidth() * sizeCell;
-    int gameHeight = settings->getLength() * sizeCell;
+    unsigned int sizeCell = UISettings::currentSizeCell;
+    unsigned int gameWidth = UISettings::maxWidth * sizeCell;
+    unsigned int gameHeight = UISettings::maxHeight * sizeCell;
     int windowWidth = gameWidth * 4 / 3;
 
     this->resize(windowWidth, gameHeight);
@@ -44,8 +44,10 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToGame() {
+    unsigned int height = settings->getHeight();
+    unsigned int width = settings->getWidth();
     numberOfStartedGames += 1;
-    
+
     if (!firstGame) {
         panel = controller->startGame();
         stackedWidget->addWidget(panel.get());
@@ -56,11 +58,6 @@ void MainWindow::switchToGame() {
 
         connect(panel.get(), &nGamePanel::GamePanel::restartGame,
             this, &MainWindow::restartGame);
-        int gameWidth = panel->getBoard()->getPreferredWidth();
-        int gameHeight = panel->getBoard()->getPreferredHeight();
-        
-        int windowWidth = gameWidth * 4 / 3;
-        this->resize(windowWidth, gameHeight);
     } else {
         controller->restart();
     }

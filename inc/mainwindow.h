@@ -9,6 +9,7 @@
 #include "settings.h"
 #include "mainmenu.h"
 #include "gamepanel.h"
+#include "uisettings.h"
 
 
 namespace nMainWindow {

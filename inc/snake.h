@@ -19,7 +19,7 @@ enum Movement {
     
 class Snake {
 public:
-    Snake(int length, int width);
+    Snake(unsigned int width, unsigned int height);
     QPoint move();
     void setDirection(Movement newDirection);
     void grow();
@@ -29,7 +29,7 @@ public:
     std::vector<QPointF> getInterpolatedBody(qreal t);
     const Movement getCurrentDirection() const;
     QPoint getNextHeadPosition() const;
-    void restart(int width, int length);
+    void restart(unsigned int width, unsigned int height);
 
 private:
     bool checkCollusionWalls() const;
@@ -40,10 +40,10 @@ private:
     Movement currentDirection;
     Movement nextDirection;
     
-    int numberOfCellsLength;
-    int numberOfCellsWidth;
+    unsigned int numberOfCellsHeight;
+    unsigned int numberOfCellsWidth;
     
-    int growPending = 0;
+    unsigned int growPending = 0;
 
     std::vector<QPoint> prevBody;
     std::vector<QPoint> currBody;

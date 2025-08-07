@@ -22,10 +22,11 @@ class GameController : public QObject {
     Q_OBJECT
 
 public:
-    explicit GameController(QObject* parent = nullptr);
+    explicit GameController(std::shared_ptr<nSettings::Settings> settings,
+        QObject* parent = nullptr);
     std::shared_ptr<nGamePanel::GamePanel> startGame();
     void update();
-    void restart(int width = 0, int length = 0);
+    void restart();
     void changeDirection(nSnake::Movement newDirection);
 private:
     std::shared_ptr<nGameBoard::GameBoard> gameBoard = nullptr;
@@ -35,15 +36,20 @@ private:
     std::shared_ptr<nGameView::GameView> board = nullptr;
     std::shared_ptr<nScore::Score> score = nullptr;
     std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
+    std::shared_ptr<nSettings::Settings> settings = nullptr;
 
-    int numberOfCellsLength;
-    int numberOfCellsWidth;
+    unsigned int numberOfCellsInHeight;
+    unsigned int numberOfCellsInWidth;
+
+    unsigned int maximumNumberOfCellsInHeight;
+    unsigned int maximumNumberOfCellsInWidth;
 
     qint64 lastMoveTime;
     int gameUpdateIntervalMs = 300;
     QTimer* gameTimer;
 
-    void initBoard();
+    void initBoard(unsigned int numberOfCellsInWidth,
+                   unsigned int numberOfCellsInHeight);
     void spawnFood();
 signals:
     void gameOver();

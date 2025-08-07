@@ -2,11 +2,14 @@
 #include <iostream>
 
 namespace nGameController {
-    GameController::GameController(QObject* parent) {
+    GameController::GameController(std::shared_ptr<nSettings::Settings> settings,
+        QObject* parent) {
         logger = Log::Logger::getLogger();
+        this->settings = settings;
         
-        numberOfCellsLength = nSettings::Settings::getLength();
-        numberOfCellsWidth = nSettings::Settings::getWidth();
+        numberOfCellsInHeight = settings->getHeight();
+        numberOfCellsInWidth = settings->getWidth();
+
         gameTimer = new QTimer(this);
         connect(gameTimer, &QTimer::timeout, this, &GameController::update);
         gameTimer->setInterval(gameUpdateIntervalMs);
@@ -14,10 +17,12 @@ namespace nGameController {
     }
 
     std::shared_ptr<nGamePanel::GamePanel> GameController::startGame() {
-        initBoard();
+        numberOfCellsInHeight = settings->getHeight();
+        numberOfCellsInWidth = settings->getWidth();
+        initBoard(numberOfCellsInWidth, numberOfCellsInHeight);
         score = std::make_shared<nScore::Score>();
         food = std::make_shared<nFood::Food>();
-        snake = std::make_shared<nSnake::Snake>(numberOfCellsLength, numberOfCellsWidth);
+        snake = std::make_shared<nSnake::Snake>(numberOfCellsInWidth, numberOfCellsInHeight);
         spawnFood();
         board->setFood(food);
         board->setSnake(snake);
@@ -27,11 +32,11 @@ namespace nGameController {
         return panel;
     }
 
-    void GameController::initBoard() {
+    void GameController::initBoard(unsigned int numberOfCellsInWidth,
+                                   unsigned int numberOfCellsInHeight) {
         gameBoard = std::make_shared<nGameBoard::GameBoard>();
-        gameBoard->createBoard();
-        board = std::make_unique<nGameView::GameView>(this,
-            numberOfCellsLength, numberOfCellsWidth, gameUpdateIntervalMs);
+        gameBoard->createBoard(numberOfCellsInWidth, numberOfCellsInHeight);
+        board = std::make_unique<nGameView::GameView>(this, gameUpdateIntervalMs);
         board->setGameBoard(gameBoard);
     }
 
@@ -70,8 +75,8 @@ namespace nGameController {
 
         bool collusion = false;
 
-        if (headPositionAfterMove.x() < 0 || headPositionAfterMove.x() >= numberOfCellsWidth ||
-            headPositionAfterMove.y() < 0 || headPositionAfterMove.y() >= numberOfCellsLength) {
+        if (headPositionAfterMove.x() < 0 || headPositionAfterMove.x() >= numberOfCellsInWidth ||
+            headPositionAfterMove.y() < 0 || headPositionAfterMove.y() >= numberOfCellsInHeight) {
             collusion = true; // Вышла за пределы поля
         } else {
             const std::vector<QPoint> currBody = snake->getBody();
@@ -109,23 +114,20 @@ namespace nGameController {
         snake->setDirection(newDirection);
     }
 
-    void GameController::restart(int width, int length) {
-        if (width != 0 && length != 0) {
-            numberOfCellsLength = length;
-            numberOfCellsWidth = width;
-        }
+    void GameController::restart() {
+        numberOfCellsInHeight = settings->getHeight();
+        numberOfCellsInWidth = settings->getWidth();
 
         gameTimer->stop();
 
-        gameBoard->restart(numberOfCellsWidth, numberOfCellsLength);
-        snake->restart(numberOfCellsWidth, numberOfCellsLength);
+        gameBoard->restart(numberOfCellsInWidth, numberOfCellsInHeight);
+        snake->restart(numberOfCellsInWidth, numberOfCellsInHeight);
         food->restart();
         spawnFood();
 
         panel->restart();
         score->restart();
-        board->restart(numberOfCellsWidth, numberOfCellsLength);
-
+        board->restart();
 
         if (gameTimer->isActive()) {
             gameTimer->stop();

@@ -3,12 +3,14 @@
 namespace nGameView {
 
     GameView::GameView(nGameController::GameController* controller,
-            int length, int width, int gameUpdateInterval, QWidget* parent) : QWidget(parent) {        
+         int gameUpdateInterval, QWidget* parent) : QWidget(parent) {        
         logger = Log::Logger::getLogger();
-        numberOfCellsLength = length;
-        numberOfCellsWidth = width;
+
+        sizeCell = UISettings::currentSizeCell;
+        maximumNumberOfCellsInWidth = UISettings::maxWidth;
+        maximumNumberOfCellsInHeight = UISettings::maxHeight;
+        
         this->controller = controller;
-        this->sizeCell = nSettings::Settings::getSizeCell();
         this->gameUpdateIntervalForAnimation = gameUpdateInterval;
 
         setFocusPolicy(Qt::StrongFocus); // Чтобы нажатия клавиш регистрировало
@@ -39,12 +41,17 @@ namespace nGameView {
     }
 
     void GameView::drawBoard(QPainter& p) {
-        for (int i = 0; i < numberOfCellsWidth; ++i) {
-            for (int j = 0; j < numberOfCellsLength; ++j) {
+        const QMap<nGameBoard::TypeCell, QPixmap>& textures = gameboard->getTextures();
+        for (int i = 0; i < maximumNumberOfCellsInWidth; ++i) {
+            for (int j = 0; j < maximumNumberOfCellsInHeight; ++j) {
                 const nGameBoard::Cell& cell = gameboard->getCell(i, j);
                 QRect rect(i * sizeCell, j * sizeCell, sizeCell, sizeCell);
-                const QMap<nGameBoard::TypeCell, QPixmap>& textures = gameboard->getTextures();
-                p.drawPixmap(rect, textures[nGameBoard::TypeCell::grass]);
+                if (cell.type == nGameBoard::TypeCell::food 
+                 || cell.type == nGameBoard::TypeCell::snake) {
+                    p.drawPixmap(rect, textures[nGameBoard::TypeCell::grass]);
+                } else {
+                    p.drawPixmap(rect, textures[cell.type]);
+                }
             }
         }
         //logger->info("Доска успешно отрисована");
@@ -112,15 +119,16 @@ namespace nGameView {
         QPainter p(this);
         p.fillRect(rect(), Qt::black);
 
-        int boardWidth = numberOfCellsWidth * sizeCell;
-        int boardHeight = numberOfCellsLength * sizeCell;
+        int boardWidth = maximumNumberOfCellsInWidth * sizeCell;
+        int boardHeight = maximumNumberOfCellsInHeight * sizeCell;
 
         int offsetX = (width() - boardWidth) / 2;
         int offsetY = (height() - boardHeight) / 2;
 
         p.translate(offsetX, offsetY);
 
-        QRect boardRect(0, 0, numberOfCellsWidth * sizeCell, numberOfCellsLength * sizeCell);
+        QRect boardRect(0, 0, maximumNumberOfCellsInWidth * sizeCell,
+                        maximumNumberOfCellsInHeight * sizeCell);
         p.setClipRect(boardRect);
         drawBoard(p);
         if (food) {
@@ -138,14 +146,14 @@ namespace nGameView {
     void GameView::resizeEvent(QResizeEvent* event) {
         int w = event->size().width();
         int h = event->size().height();
-        sizeCell = std::min(w / numberOfCellsWidth, h / numberOfCellsLength);
+        sizeCell = std::min(w / maximumNumberOfCellsInWidth, h / maximumNumberOfCellsInHeight);
     
         update();
         logger->info("Размер игрового окна в GameView успешно изменён");
     }
 
     QSize GameView::minimumSizeHint() const {
-        return QSize(numberOfCellsWidth * sizeCell, numberOfCellsLength * sizeCell);
+        return QSize(maximumNumberOfCellsInWidth * sizeCell, maximumNumberOfCellsInHeight * sizeCell);
     }
     
     QSize GameView::sizeHint() const {
@@ -188,16 +196,14 @@ namespace nGameView {
     }
 
     int GameView::getPreferredWidth() const {
-        return numberOfCellsWidth * sizeCell;
+        return maximumNumberOfCellsInWidth * sizeCell;
     }
     
     int GameView::getPreferredHeight() const {
-        return numberOfCellsLength * sizeCell;
+        return maximumNumberOfCellsInHeight * sizeCell;
     }
 
-    void GameView::restart(int width, int length) {
-        numberOfCellsLength = length;
-        numberOfCellsWidth = width;
+    void GameView::restart() {
         frameTimer->start(16);
         animationFrozen = false;
     }

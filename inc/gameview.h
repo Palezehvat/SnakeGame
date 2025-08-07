@@ -13,6 +13,7 @@
 #include "food.h"
 #include "snake.h"
 #include "gamecontroller.h"
+#include "uisettings.h"
 
 namespace nGameController {
     class GameController;
@@ -25,7 +26,7 @@ class GameView : public QWidget {
 
 public:
     GameView(nGameController::GameController* controller, 
-        int length, int width, int gameUpdateInterval, QWidget* parent = nullptr);
+        int gameUpdateInterval, QWidget* parent = nullptr);
     void setGameBoard(std::shared_ptr<nGameBoard::GameBoard> board);
     void setFood(std::shared_ptr<nFood::Food> food);
     void setSnake(std::shared_ptr<nSnake::Snake> snake);
@@ -33,13 +34,13 @@ public:
     int getPreferredWidth() const;
     int getPreferredHeight() const;
     void stopAnimation();
-    void restart(int width, int length);
+    void restart();
 
 private:
     int sizeCell;
     bool animationFrozen;
-    int numberOfCellsLength;
-    int numberOfCellsWidth;
+    unsigned int maximumNumberOfCellsInHeight;
+    unsigned int maximumNumberOfCellsInWidth;
     std::shared_ptr<spdlog::logger> logger;
     std::shared_ptr<nGameBoard::GameBoard> gameboard;
     std::shared_ptr<nFood::Food> food;
