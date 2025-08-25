@@ -47,10 +47,13 @@ private:
     qint64 lastMoveTime;
     int gameUpdateIntervalMs = 300;
     QTimer* gameTimer;
+    bool isPause;
+    bool isGameOver;
 
     void initBoard(unsigned int numberOfCellsInWidth,
                    unsigned int numberOfCellsInHeight);
     void spawnFood();
+    void setPause();
 signals:
     void gameOver();
 }; // GameController

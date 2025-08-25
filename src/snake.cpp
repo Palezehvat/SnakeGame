@@ -7,10 +7,12 @@ namespace nSnake {
         currentDirection = Right;
         nextDirection = Right;
     
-        QPoint headPosition = {1, 0};
+        QPoint headPosition = {2, 0};
+        QPoint bodyPosition = {1, 0};
         QPoint tailPosition = {0, 0};
     
         currBody.push_back(tailPosition);
+        currBody.push_back(bodyPosition);
         currBody.push_back(headPosition);
     
         prevBody = currBody;
@@ -137,10 +139,12 @@ namespace nSnake {
         currBody.clear();
         prevBody.clear();
 
-        QPoint headPosition = {1, 0};
+        QPoint headPosition = {2, 0};
+        QPoint bodyPosition = {1, 0};
         QPoint tailPosition = {0, 0};
     
         currBody.push_back(tailPosition);
+        currBody.push_back(bodyPosition);
         currBody.push_back(headPosition);
     
         prevBody = currBody;

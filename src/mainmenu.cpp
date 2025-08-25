@@ -1,11 +1,10 @@
 #include "mainmenu.h"
-#include <iostream>
 
 namespace nMenu {
     Menu::Menu(QWidget* parent) : QWidget(parent) {
         QVBoxLayout* layout = new QVBoxLayout(this);
-        QString backgroundPath = QCoreApplication::applicationDirPath() + "/../images/background.png";
-        QPixmap background(backgroundPath);
+        background = QPixmap(QCoreApplication::applicationDirPath() 
+                   + UISettings::backgroundPathMainMenu);
 
         logger = Log::Logger::getLogger(); 
 
@@ -28,8 +27,8 @@ namespace nMenu {
 
         toSettings = new QPushButton();
         toSettings->setFixedSize(50, 50);
-        QString iconPath = QCoreApplication::applicationDirPath() + "/../images/settings.png";
-        QIcon iconSettings(iconPath);
+        QIcon iconSettings(QCoreApplication::applicationDirPath() 
+                         + UISettings::settingsIconPathMainMenu);
         toSettings->setIcon(iconSettings);
         toSettings->setIconSize(QSize(53, 53));
         toSettings->setFlat(true);
@@ -41,8 +40,6 @@ namespace nMenu {
     }
 
     void Menu::resizeEvent(QResizeEvent* event) {
-        QString imagePath = QCoreApplication::applicationDirPath() + "/../images/background.png";
-        QPixmap background(imagePath);
         if (background.isNull()) {
             logger->error("Не удалось подгрузить картинку, на задний фон экрана(главное меню),"
                         "во время изменения размера экрана");

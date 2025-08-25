@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     settings = std::make_shared<nSettings::Settings>();
     controller = std::make_shared<nGameController::GameController>(settings);
     
-    unsigned int sizeCell = UISettings::currentSizeCell;
+    qreal sizeCell = UISettings::currentSizeCell;
     unsigned int gameWidth = UISettings::maxWidth * sizeCell;
     unsigned int gameHeight = UISettings::maxHeight * sizeCell;
     int windowWidth = gameWidth * 4 / 3;

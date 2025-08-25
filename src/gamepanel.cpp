@@ -19,31 +19,11 @@ namespace nGamePanel {
         layout->addWidget(score.get());
         layout->setStretch(0, 3);
         layout->setStretch(1, 1);
-
-        restartButton = new QPushButton("Начать заново", this);
-        menuButton = new QPushButton("В меню", this);
-
-        restartButton->move(200, 100);
-        menuButton->move(200, 200);
-
-        restartButton->hide();
-        menuButton->hide();
-
-        connect(restartButton, &QPushButton::clicked, this, &GamePanel::restartGame);
-        connect(menuButton, &QPushButton::clicked, this, &GamePanel::backToMenu);
-    }
-
-    void GamePanel::showGameOverScreen() {
-        restartButton->show();
-        menuButton->show();
+        connect(score.get(), &nScore::Score::restartGame, this, &GamePanel::restartGame);
+        connect(score.get(), &nScore::Score::backToMenu, this, &GamePanel::backToMenu);
     }
 
     std::shared_ptr<nGameView::GameView> GamePanel::getBoard() const {
         return board;
-    }
-
-    void GamePanel::restart() {
-        restartButton->hide();
-        menuButton->hide();
     }
 };

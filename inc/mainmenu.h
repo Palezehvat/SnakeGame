@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QCoreApplication>
 #include "logger.h"
+#include "uisettings.h"
 
 namespace nMenu {
 
@@ -16,9 +17,12 @@ public:
     Menu(QWidget* parent = nullptr);
 
 private:
+    QPixmap background;
     std::shared_ptr<spdlog::logger> logger;
     QPushButton* startGame = nullptr;
     QPushButton* toSettings = nullptr;
+    
+protected:
     void resizeEvent(QResizeEvent* event) override;
 
 signals:

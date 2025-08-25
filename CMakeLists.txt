@@ -68,11 +68,17 @@ qt_add_library(controller
     inc/gamecontroller.h
 )
 
+qt_add_library(appleWidget
+    src/applewidget.cpp
+    inc/applewidget.h
+)
+
 add_library(app src/application.cpp)
 
 target_link_libraries(logger PRIVATE spdlog::spdlog)
+target_link_libraries(appleWidget PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(internals PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
-target_link_libraries(score PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(score PRIVATE logger appleWidget Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(menu PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(food PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)
 target_link_libraries(snake PRIVATE logger Qt6::Core Qt6::Gui Qt6::Widgets)

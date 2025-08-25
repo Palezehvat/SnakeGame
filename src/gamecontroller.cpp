@@ -13,22 +13,25 @@ namespace nGameController {
         gameTimer = new QTimer(this);
         connect(gameTimer, &QTimer::timeout, this, &GameController::update);
         gameTimer->setInterval(gameUpdateIntervalMs);
+        score = std::make_shared<nScore::Score>();
+        connect(score.get(), &nScore::Score::pause, this, &GameController::setPause);
         logger->info("Класс GameController успешно инициализирован");
+        isPause = false;
+        isGameOver = false;
     }
 
     std::shared_ptr<nGamePanel::GamePanel> GameController::startGame() {
         numberOfCellsInHeight = settings->getHeight();
         numberOfCellsInWidth = settings->getWidth();
         initBoard(numberOfCellsInWidth, numberOfCellsInHeight);
-        score = std::make_shared<nScore::Score>();
         food = std::make_shared<nFood::Food>();
         snake = std::make_shared<nSnake::Snake>(numberOfCellsInWidth, numberOfCellsInHeight);
         spawnFood();
         board->setFood(food);
         board->setSnake(snake);
+        panel = std::make_shared<nGamePanel::GamePanel>(board, score);
         gameTimer->start();
         logger->info("GameController успешно начал игру");
-        panel = std::make_shared<nGamePanel::GamePanel>(board, score);
         return panel;
     }
 
@@ -67,10 +70,20 @@ namespace nGameController {
         }
     }
 
+    void GameController::setPause() {//
+        if (isGameOver) return;
+        isPause = !isPause;
+        if (isPause) {
+            gameTimer->stop();
+            qint64 startPause = QDateTime::currentMSecsSinceEpoch();
+            board->stopAnimation();
+        } else {
+            board->continueAnimation();
+            gameTimer->start();
+        }
+    }
+
     void GameController::update() {
-        lastMoveTime = QDateTime::currentMSecsSinceEpoch();
-        board->setLastMoveTime(lastMoveTime);
-        
         QPoint headPositionAfterMove = snake->getNextHeadPosition();
 
         bool collusion = false;
@@ -88,13 +101,17 @@ namespace nGameController {
         }
         
         if (collusion) {
-            panel->showGameOverScreen();
+            score->showGameOverScreen();
             gameTimer->stop();
             emit gameOver();
             board->stopAnimation();
+            isGameOver = true;
             return;
         }
         
+        lastMoveTime = QDateTime::currentMSecsSinceEpoch();
+        board->setLastMoveTime(lastMoveTime);
+
         QPoint headPosition = snake->move();
         
         const nGameBoard::Cell& positionWhereSnake = gameBoard->getCell(headPosition.x(),
@@ -111,10 +128,13 @@ namespace nGameController {
     }
 
     void GameController::changeDirection(nSnake::Movement newDirection) {
+        if (isGameOver) return;
         snake->setDirection(newDirection);
     }
 
     void GameController::restart() {
+        isPause = false;
+        isGameOver = false;
         numberOfCellsInHeight = settings->getHeight();
         numberOfCellsInWidth = settings->getWidth();
 
@@ -125,7 +145,6 @@ namespace nGameController {
         food->restart();
         spawnFood();
 
-        panel->restart();
         score->restart();
         board->restart();
 

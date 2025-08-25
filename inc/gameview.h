@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QPainterPath>
+#include <QApplication>
 #include <iostream>
 #include "settings.h"
 #include "logger.h"
@@ -34,11 +35,18 @@ public:
     int getPreferredWidth() const;
     int getPreferredHeight() const;
     void stopAnimation();
+    void continueAnimation();
     void restart();
 
 private:
-    int sizeCell;
+    QColor colorEvenField;
+    QColor colorOddField;
+    QColor colorBackground;
+    qreal headRenderAngle = 0.0;
+    bool headAngleInitialized = false;
+    qreal sizeCell;
     bool animationFrozen;
+    qreal pausedT;
     unsigned int maximumNumberOfCellsInHeight;
     unsigned int maximumNumberOfCellsInWidth;
     std::shared_ptr<spdlog::logger> logger;
@@ -48,13 +56,16 @@ private:
     nGameController::GameController* controller;
     QTimer* frameTimer = nullptr;
     qint64 lastMoveTime = 0;
-    int gameUpdateIntervalForAnimation;
+    int gameUpdateIntervalMs;
 
     void paintEvent(QPaintEvent*) override;
     void resizeEvent(QResizeEvent* event) override;
     void drawBoard(QPainter& p);
+    void drawApple(QPainter& p, QPointF center);
     void drawFood(QPainter& p);
     void drawSnake(QPainter& p);
+    void drawEyes(QPainter& p, QPointF p1, QPointF p2);
+    void drawRotatedHead(QPainter& p, QPointF center, qreal angle);
     void keyPressEvent(QKeyEvent* event);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const;

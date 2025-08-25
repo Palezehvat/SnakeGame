@@ -5,10 +5,8 @@ namespace nSettings {
         logger = Log::Logger::getLogger();
 
         mainLayout = new QVBoxLayout(this);
-        
-        QString backgroundPath = QCoreApplication::applicationDirPath() 
-        + "/../images/backgroundSettings.png";
-        background = QPixmap(backgroundPath);
+        background = QPixmap(QCoreApplication::applicationDirPath() 
+                           + UISettings::backgroundPathSettings);
 
         if (background.isNull()) {
             logger->error("Не удалось подгрузить картинку, на задний фон экрана(настройки)");
@@ -34,8 +32,10 @@ namespace nSettings {
         titleSettings->setAlignment(Qt::AlignCenter);
 
         grid = new QGridLayout();
-        boardWidth = new nInternalsSettings::InternalsSettings("Ширина поля", 15, 2, 15);
-        boardHeight = new nInternalsSettings::InternalsSettings("Длинна поля", 10, 1, 10);
+        boardWidth = new nInternalsSettings::InternalsSettings("Ширина поля",
+                            UISettings::maxWidth, UISettings::minWidth, UISettings::maxWidth); 
+        boardHeight = new nInternalsSettings::InternalsSettings("Высота поля",
+                            UISettings::maxHeight, UISettings::minHeight, UISettings::maxHeight);
         //countRocks = new nInternalsSettings::InternalsSettings("Количество камней", 0, 0, 148);
         
         grid->addWidget(boardWidth, 0, 0);

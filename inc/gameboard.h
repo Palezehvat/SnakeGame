@@ -3,7 +3,6 @@
 
 #include <QPixmap>
 #include <QWidget>
-#include <QCoreApplication>
 #include "logger.h"
 #include "settings.h"
 #include "uisettings.h"
@@ -14,6 +13,7 @@ enum TypeCell {
     grass,
     food,
     snake,
+    background,
     rock
 };
 
@@ -28,15 +28,11 @@ public:
     GameBoard();
     const Cell& getCell(int x, int y) const;
     void setCell(int x, int y, TypeCell type);
-    const QMap<TypeCell, QPixmap>& getTextures();
     void createBoard(unsigned int numberOfCellsInWidth, unsigned int numberOfCellsInHeight);
     std::vector<QPoint> getEmptyCells() const;
     void restart(int width, int height);
 
 private:
-    void loadTextures();
-    QPixmap loadTexture(QString path);
-    QMap<TypeCell, QPixmap> textures;
     std::shared_ptr<spdlog::logger> logger;
     QVector<QVector<Cell>> board;
 

@@ -6,31 +6,7 @@ namespace nGameBoard {
         maximumNumberOfCellsInHeight = UISettings::maxHeight;
         maximumNumberOfCellsInWidth = UISettings::maxWidth;
         logger = Log::Logger::getLogger();
-        loadTextures();
         logger->info("Класс GameBoard успешно инициализирован");
-    }
-
-    QPixmap GameBoard::loadTexture(QString path) {
-        QPixmap image;
-        if (!image.load(path)) {
-            logger->error(fmt::format("Не удалось загрузить текстуру поля: {}",
-                                           path.toStdString()));
-        } else {
-            logger->info(fmt::format("Текстура поля успешно загружена: {}",
-                                           path.toStdString()));
-        }
-        return image;
-    }
-
-    void GameBoard::loadTextures() {        
-        textures.insert(grass,
-                loadTexture(QCoreApplication::applicationDirPath() + "/../images/grass.jpg"));
-
-        textures.insert(food,
-                loadTexture(QCoreApplication::applicationDirPath() + "/../images/apple.png"));
-
-        textures.insert(rock,
-                loadTexture(QCoreApplication::applicationDirPath() + "/../images/rock.png"));
     }
 
     void GameBoard::createBoard(unsigned int numberOfCellsInWidth,
@@ -45,18 +21,20 @@ namespace nGameBoard {
             for (int j = 0; j < maximumNumberOfCellsInHeight; ++j) {
                 Cell cell;
                 if (i >= numberOfCellsInWidth || j >= numberOfCellsInHeight) {
-                    cell = Cell{i, j, rock};
+                    cell = Cell{i, j, TypeCell::background};
                 } else {
-                    cell = Cell{i, j, grass};
+                    cell = Cell{i, j, TypeCell::grass};
                 }
                 board[i][j] = cell;
             }
         }
 
-        Cell cellHead{1, 0, TypeCell::snake};
+        Cell cellHead{2, 0, TypeCell::snake};
+        Cell cellBody{1, 0, TypeCell::snake};
         Cell cellTail{0, 0, TypeCell::snake};
         
-        board[1][0] = cellHead;
+        board[2][0] = cellHead;
+        board[1][0] = cellBody;
         board[0][0] = cellTail;
         logger->info("Доска для игры успешно создана"); 
     }
@@ -79,10 +57,6 @@ namespace nGameBoard {
             }
         }
         return result;
-    }
-
-    const QMap<TypeCell, QPixmap>& GameBoard::getTextures() {
-        return textures;
     }
 
     void GameBoard::restart(int width, int height) {

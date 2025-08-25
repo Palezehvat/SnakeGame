@@ -6,7 +6,6 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QPalette>
-#include <QCoreApplication>
 #include "internalssettings.h"
 #include "logger.h"
 #include "uisettings.h"
