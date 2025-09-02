@@ -1,5 +1,4 @@
 #include "gamecontroller.h"
-#include <iostream>
 
 namespace nGameController {
     GameController::GameController(std::shared_ptr<nSettings::Settings> settings,
@@ -30,6 +29,9 @@ namespace nGameController {
         board->setFood(food);
         board->setSnake(snake);
         panel = std::make_shared<nGamePanel::GamePanel>(board, score);
+        connect(panel.get(), &nGamePanel::GamePanel::gameOver, this, [=](){
+            isGameOver = true;
+        });
         gameTimer->start();
         logger->info("GameController успешно начал игру");
         return panel;
@@ -39,7 +41,8 @@ namespace nGameController {
                                    unsigned int numberOfCellsInHeight) {
         gameBoard = std::make_shared<nGameBoard::GameBoard>();
         gameBoard->createBoard(numberOfCellsInWidth, numberOfCellsInHeight);
-        board = std::make_unique<nGameView::GameView>(this, gameUpdateIntervalMs);
+        board = std::make_unique<nGameView::GameView>(this, gameUpdateIntervalMs,
+                        numberOfCellsInHeight, numberOfCellsInWidth, settings->getKeys());
         board->setGameBoard(gameBoard);
     }
 
@@ -70,7 +73,7 @@ namespace nGameController {
         }
     }
 
-    void GameController::setPause() {//
+    void GameController::setPause() {
         if (isGameOver) return;
         isPause = !isPause;
         if (isPause) {
@@ -100,7 +103,7 @@ namespace nGameController {
             }
         }
         
-        if (collusion) {
+        if (collusion || isGameOver) {
             score->showGameOverScreen();
             gameTimer->stop();
             emit gameOver();
@@ -146,7 +149,7 @@ namespace nGameController {
         spawnFood();
 
         score->restart();
-        board->restart();
+        board->restart(numberOfCellsInHeight, numberOfCellsInWidth);
 
         if (gameTimer->isActive()) {
             gameTimer->stop();

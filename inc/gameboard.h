@@ -4,7 +4,6 @@
 #include <QPixmap>
 #include <QWidget>
 #include "logger.h"
-#include "settings.h"
 #include "uisettings.h"
 
 namespace nGameBoard{
@@ -13,7 +12,6 @@ enum TypeCell {
     grass,
     food,
     snake,
-    background,
     rock
 };
 
@@ -35,9 +33,6 @@ public:
 private:
     std::shared_ptr<spdlog::logger> logger;
     QVector<QVector<Cell>> board;
-
-    unsigned int maximumNumberOfCellsInHeight;
-    unsigned int maximumNumberOfCellsInWidth;
 
     unsigned int numberOfCellsInHeight;
     unsigned int numberOfCellsInWidth;

@@ -6,9 +6,12 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QPalette>
-#include "internalssettings.h"
+#include <QStackedWidget>
+#include <QSettings>
 #include "logger.h"
-#include "uisettings.h"
+#include "mainsettings.h"
+#include "gamesettings.h"
+#include "controlsettings.h"
 
 namespace nSettings {
 
@@ -17,19 +20,21 @@ class Settings : public QWidget {
 
 public:
     Settings(QWidget* parent = nullptr);
-    unsigned int getHeight();
-    unsigned int getWidth();
+    unsigned int getHeight() const;
+    unsigned int getWidth() const;
+    std::shared_ptr<std::unordered_map<QString, int>> getKeys();
 
 private:
     std::shared_ptr<spdlog::logger> logger;
-    
-    QGridLayout* grid = nullptr;
+    nMainSettings::MainSettings* mainSettings = nullptr;
+    nGameSettings::GameSettings* gameSettings = nullptr;
+    nControlSettings::ControlSettings* controlSettings = nullptr;
+    std::shared_ptr<QSettings> settings = nullptr;
+    QStackedWidget* stackedWidget = nullptr;
     QVBoxLayout* mainLayout = nullptr;
-    QPushButton* toSettings = nullptr;
-    nInternalsSettings::InternalsSettings* boardWidth = nullptr;
-    nInternalsSettings::InternalsSettings* boardHeight = nullptr;
-    //nInternalsSettings::InternalsSettings* countRocks = nullptr;
     QPixmap background;
+
+    void showBackground();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

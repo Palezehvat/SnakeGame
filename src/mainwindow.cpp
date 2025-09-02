@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     int windowWidth = gameWidth * 4 / 3;
 
     this->resize(windowWidth, gameHeight);
+    this->setMinimumSize(windowWidth, gameHeight);
 
     firstGame = false;
     numberOfStartedGames = 0;
@@ -44,13 +45,12 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToGame() {
-    unsigned int height = settings->getHeight();
-    unsigned int width = settings->getWidth();
     numberOfStartedGames += 1;
 
     if (!firstGame) {
         panel = controller->startGame();
         stackedWidget->addWidget(panel.get());
+        setMinimumSize(panel->minimumSizeHint());
         firstGame = true;
 
         connect(panel.get(), &nGamePanel::GamePanel::backToMenu,

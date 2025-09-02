@@ -2,17 +2,23 @@
 
 namespace nGameView {
 
-    GameView::GameView(nGameController::GameController* controller,
-         int gameUpdateInterval, QWidget* parent) : QWidget(parent) {        
+    GameView::GameView(nGameController::GameController* controller, int gameUpdateInterval,
+                unsigned int height, unsigned int width, 
+                std::shared_ptr<std::unordered_map<QString, int>> keys, QWidget* parent) 
+                : QWidget(parent), keys(keys) {        
         logger = Log::Logger::getLogger();
 
         sizeCell = UISettings::currentSizeCell;
-        maximumNumberOfCellsInWidth = UISettings::maxWidth;
-        maximumNumberOfCellsInHeight = UISettings::maxHeight;
+        
+        heightBoard = height;
+        widthBoard = width;
 
         colorEvenField = QColor(UISettings::colorEvenFieldInGame);
         colorOddField = QColor(UISettings::colorOddFieldInGame);
         colorBackground = QColor(UISettings::colorBackgroundInGame);
+
+        setMinimumSize(UISettings::maxWidth * UISettings::currentSizeCell,
+                       UISettings::maxHeight * UISettings::currentSizeCell);
         
         this->controller = controller;
         this->gameUpdateIntervalMs = gameUpdateInterval;
@@ -112,16 +118,12 @@ namespace nGameView {
     }
 
     void GameView::drawBoard(QPainter& p) {
-        for (int i = 0; i < maximumNumberOfCellsInWidth; ++i) {
-            for (int j = 0; j < maximumNumberOfCellsInHeight; ++j) {
+        for (int i = 0; i < widthBoard; ++i) {
+            for (int j = 0; j < heightBoard; ++j) {
                 const nGameBoard::Cell& cell = gameboard->getCell(i, j);
                 QRect rect(i * sizeCell, j * sizeCell, sizeCell, sizeCell);
-                if (cell.type != nGameBoard::TypeCell::background) {
-                    bool isEven = ((cell.row + cell.col) % 2) == 0;
-                    p.fillRect(rect, isEven ? colorEvenField : colorOddField);
-                } else {
-                    p.fillRect(rect, colorBackground);
-                }
+                bool isEven = ((cell.row + cell.col) % 2) == 0;
+                p.fillRect(rect, isEven ? colorEvenField : colorOddField);
             }
         }
         //logger->info("Доска успешно отрисована");
@@ -314,17 +316,17 @@ namespace nGameView {
         //logger->info("Начался процесс отрисовки доски");
         QPainter p(this);
         p.fillRect(rect(), colorBackground);
+        sizeCell = std::min(width() / widthBoard, height() / heightBoard);
 
-        int boardWidth = maximumNumberOfCellsInWidth * sizeCell;
-        int boardHeight = maximumNumberOfCellsInHeight * sizeCell;
+        int boardWidth = widthBoard * sizeCell;
+        int boardHeight = heightBoard * sizeCell;
 
         int offsetX = (width() - boardWidth) / 2;
         int offsetY = (height() - boardHeight) / 2;
 
         p.translate(offsetX, offsetY);
 
-        QRect boardRect(0, 0, maximumNumberOfCellsInWidth * sizeCell,
-                        maximumNumberOfCellsInHeight * sizeCell);
+        QRect boardRect(0, 0, widthBoard * sizeCell, heightBoard * sizeCell);
         p.setClipRect(boardRect);
         drawBoard(p);
         if (food) {
@@ -342,14 +344,15 @@ namespace nGameView {
     void GameView::resizeEvent(QResizeEvent* event) {
         int w = event->size().width();
         int h = event->size().height();
-        sizeCell = std::min(w / maximumNumberOfCellsInWidth, h / maximumNumberOfCellsInHeight);
+        sizeCell = std::min(w / widthBoard, h / heightBoard);
     
         update();
         logger->info("Размер игрового окна в GameView успешно изменён");
     }
 
     QSize GameView::minimumSizeHint() const {
-        return QSize(maximumNumberOfCellsInWidth * sizeCell, maximumNumberOfCellsInHeight * sizeCell);
+        return QSize(UISettings::minWidth * UISettings::currentSizeCell, 
+                     UISettings::minHeight * UISettings::currentSizeCell);
     }
     
     QSize GameView::sizeHint() const {
@@ -373,33 +376,33 @@ namespace nGameView {
     }
 
     void GameView::keyPressEvent(QKeyEvent* event) {
-        switch (event->key()) {
-            case Qt::Key_Up:
-                controller->changeDirection(nSnake::Movement::Up);
-                break;
-            case Qt::Key_Down:
-                controller->changeDirection(nSnake::Movement::Down);
-                break;
-            case Qt::Key_Left:
-                controller->changeDirection(nSnake::Movement::Left);
-                break;
-            case Qt::Key_Right:
-                controller->changeDirection(nSnake::Movement::Right);
-                break;
-            default:
-                QWidget::keyPressEvent(event);
+        int key = event->key();
+        if (key == (*keys)["up"]) {
+            controller->changeDirection(nSnake::Movement::Up);
+        } else if (key == (*keys)["down"]) {
+            controller->changeDirection(nSnake::Movement::Down);
+        } else if (key == (*keys)["left"]) {
+            controller->changeDirection(nSnake::Movement::Left);
+        } else if (key == (*keys)["right"]) {
+            controller->changeDirection(nSnake::Movement::Right);
+        } else if (key == (*keys)["pause"]) {
+            controller->setPause();
+        } else if (key == (*keys)["restart"]) {
+            controller->restart();
         }
     }
 
     int GameView::getPreferredWidth() const {
-        return maximumNumberOfCellsInWidth * sizeCell;
+        return widthBoard * sizeCell;
     }
     
     int GameView::getPreferredHeight() const {
-        return maximumNumberOfCellsInHeight * sizeCell;
+        return heightBoard * sizeCell;
     }
 
-    void GameView::restart() {
+    void GameView::restart(unsigned int height, unsigned int width) {
+        widthBoard = width;
+        heightBoard = height;
         frameTimer->start(16);
         animationFrozen = false;
         this->setFocus(Qt::OtherFocusReason);

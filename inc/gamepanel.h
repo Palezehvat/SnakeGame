@@ -32,6 +32,7 @@ private:
 signals:
     void backToMenu();
     void restartGame();
+    void gameOver();
 
 };
 

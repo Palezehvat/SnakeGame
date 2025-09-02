@@ -21,7 +21,9 @@ private:
     std::shared_ptr<spdlog::logger> logger;
     QPushButton* startGame = nullptr;
     QPushButton* toSettings = nullptr;
+    QVBoxLayout* mainLayout = nullptr;
     
+    void showBackground();
 protected:
     void resizeEvent(QResizeEvent* event) override;
 

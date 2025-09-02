@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDateTime>
 #include <iostream>
+#include "settings.h"
 #include "gameboard.h"
 #include "food.h"
 #include "snake.h"
@@ -27,6 +28,7 @@ public:
     std::shared_ptr<nGamePanel::GamePanel> startGame();
     void update();
     void restart();
+    void setPause();
     void changeDirection(nSnake::Movement newDirection);
 private:
     std::shared_ptr<nGameBoard::GameBoard> gameBoard = nullptr;
@@ -41,9 +43,6 @@ private:
     unsigned int numberOfCellsInHeight;
     unsigned int numberOfCellsInWidth;
 
-    unsigned int maximumNumberOfCellsInHeight;
-    unsigned int maximumNumberOfCellsInWidth;
-
     qint64 lastMoveTime;
     int gameUpdateIntervalMs = 300;
     QTimer* gameTimer;
@@ -53,7 +52,6 @@ private:
     void initBoard(unsigned int numberOfCellsInWidth,
                    unsigned int numberOfCellsInHeight);
     void spawnFood();
-    void setPause();
 signals:
     void gameOver();
 }; // GameController

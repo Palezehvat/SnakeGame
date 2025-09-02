@@ -1,10 +1,7 @@
 #include "gameboard.h"
-#include <iostream>
 
 namespace nGameBoard {
     GameBoard::GameBoard() {
-        maximumNumberOfCellsInHeight = UISettings::maxHeight;
-        maximumNumberOfCellsInWidth = UISettings::maxWidth;
         logger = Log::Logger::getLogger();
         logger->info("Класс GameBoard успешно инициализирован");
     }
@@ -15,16 +12,12 @@ namespace nGameBoard {
         this->numberOfCellsInWidth = numberOfCellsInWidth;
         this->numberOfCellsInHeight = numberOfCellsInHeight;
         
-        board.resize(maximumNumberOfCellsInWidth);
-        for (int i = 0; i < maximumNumberOfCellsInWidth; ++i) {
-            board[i].resize(maximumNumberOfCellsInHeight);
-            for (int j = 0; j < maximumNumberOfCellsInHeight; ++j) {
+        board.resize(numberOfCellsInWidth);
+        for (int i = 0; i < numberOfCellsInWidth; ++i) {
+            board[i].resize(numberOfCellsInHeight);
+            for (int j = 0; j < numberOfCellsInHeight; ++j) {
                 Cell cell;
-                if (i >= numberOfCellsInWidth || j >= numberOfCellsInHeight) {
-                    cell = Cell{i, j, TypeCell::background};
-                } else {
-                    cell = Cell{i, j, TypeCell::grass};
-                }
+                cell = Cell{i, j, TypeCell::grass};
                 board[i][j] = cell;
             }
         }

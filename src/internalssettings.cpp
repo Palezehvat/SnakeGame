@@ -3,15 +3,30 @@
 namespace nInternalsSettings {
 
     InternalsSettings::InternalsSettings(const QString& newText, const unsigned int newValue, const 
-        unsigned int minValue, const unsigned int maxValue, QSlider* parent)
-        : QSlider(Qt::Horizontal, parent), text(newText) {
+        unsigned int minValue, const unsigned int maxValue, const QString& settingsPlace,
+        std::shared_ptr<QSettings> settings, QSlider* parent) : QSlider(Qt::Horizontal, parent),
+        text(newText), settingsPlace(settingsPlace), settings(settings) {
+
+        logger = Log::Logger::getLogger();
 
         isHovered = false;
-        value = newValue;
 
-        this->setValue(newValue);
-        this->setMinimum(minValue);
-        this->setMaximum(maxValue);
+        if (newValue >= minValue && newValue <= maxValue) {
+            this->setValue(newValue);
+            this->setMinimum(minValue);
+            this->setMaximum(maxValue);
+            value = newValue;
+        } else {
+            logger->error(fmt::format("Неверная конфигурация.{}: {}.Переход к настройке по умолчанию.",
+                          text.toStdString(), std::to_string(newValue)));
+            this->setValue(maxValue);
+            this->setMinimum(minValue);
+            this->setMaximum(maxValue);
+            value = maxValue;
+            settings->setValue(settingsPlace, value);
+        }
+
+        int handleWidth = std::max(4, this->width() / 10);
 
         QString styleInternalsSettings = QString(R"(
             QSlider::groove:horizontal {
@@ -19,17 +34,19 @@ namespace nInternalsSettings {
             }
             QSlider::handle:horizontal {
                 background: %2;
-                width: 12px;
+                width: %3px;
             }
-        )").arg(UISettings::sliderGrooveBackgroundColor, UISettings::sliderHandleBackgroundColor);
+        )").arg(UISettings::sliderGrooveBackgroundColor, UISettings::sliderHandleBackgroundColor)
+           .arg(handleWidth);
 
         this->setStyleSheet(styleInternalsSettings);
 
-        fontSize = 10;
+        fontSize = height() / 10;
 
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        this->setFixedHeight(85);
+
         connect(this, &QSlider::valueChanged, this, [this](int v) {
+            this->settings->setValue(this->settingsPlace, v);
             value = v;
             update();
         });
@@ -37,9 +54,26 @@ namespace nInternalsSettings {
 
     void InternalsSettings::resizeEvent(QResizeEvent* event) {
         QWidget::resizeEvent(event);
+
+        int handleWidth = std::max(4, this->width() / 10);
+
+        QString styleInternalsSettings = QString(R"(
+            QSlider::groove:horizontal {
+                background: %1;
+            }
+            QSlider::handle:horizontal {
+                background: %2;
+                width: %3px;
+            }
+        )").arg(UISettings::sliderGrooveBackgroundColor,
+                UISettings::sliderHandleBackgroundColor)
+           .arg(handleWidth);
     
-        int height = this->height();
-        fontSize = std::min(height / 4.5, 40.0);
+        this->setStyleSheet(styleInternalsSettings);
+
+        QFont font = UISettings::findBestSizeFont(this->height(), this->width(), this->font(),
+                                                  text + ": " + QString::number(value));
+        fontSize = font.pointSizeF();
 
         update();
     }

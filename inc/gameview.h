@@ -8,7 +8,6 @@
 #include <QPainterPath>
 #include <QApplication>
 #include <iostream>
-#include "settings.h"
 #include "logger.h"
 #include "gameboard.h"
 #include "food.h"
@@ -26,8 +25,9 @@ class GameView : public QWidget {
     Q_OBJECT
 
 public:
-    GameView(nGameController::GameController* controller, 
-        int gameUpdateInterval, QWidget* parent = nullptr);
+    GameView(nGameController::GameController* controller, int gameUpdateInterval,
+             unsigned int height, unsigned int width,
+             std::shared_ptr<std::unordered_map<QString, int>> keys, QWidget* parent = nullptr);
     void setGameBoard(std::shared_ptr<nGameBoard::GameBoard> board);
     void setFood(std::shared_ptr<nFood::Food> food);
     void setSnake(std::shared_ptr<nSnake::Snake> snake);
@@ -36,7 +36,7 @@ public:
     int getPreferredHeight() const;
     void stopAnimation();
     void continueAnimation();
-    void restart();
+    void restart(unsigned int height, unsigned int width);
 
 private:
     QColor colorEvenField;
@@ -45,15 +45,16 @@ private:
     qreal headRenderAngle = 0.0;
     bool headAngleInitialized = false;
     qreal sizeCell;
+    unsigned int heightBoard;
+    unsigned int widthBoard;
     bool animationFrozen;
     qreal pausedT;
-    unsigned int maximumNumberOfCellsInHeight;
-    unsigned int maximumNumberOfCellsInWidth;
-    std::shared_ptr<spdlog::logger> logger;
-    std::shared_ptr<nGameBoard::GameBoard> gameboard;
-    std::shared_ptr<nFood::Food> food;
-    std::shared_ptr<nSnake::Snake> snake;
-    nGameController::GameController* controller;
+    std::shared_ptr<spdlog::logger> logger = nullptr;
+    std::shared_ptr<nGameBoard::GameBoard> gameboard = nullptr;
+    std::shared_ptr<nFood::Food> food = nullptr;
+    std::shared_ptr<nSnake::Snake> snake = nullptr;
+    nGameController::GameController* controller = nullptr;
+    std::shared_ptr<std::unordered_map<QString, int>> keys;
     QTimer* frameTimer = nullptr;
     qint64 lastMoveTime = 0;
     int gameUpdateIntervalMs;

@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QEvent>
+#include <QSettings>
 #include "uisettings.h"
 #include "logger.h"
 
@@ -17,12 +18,16 @@ class InternalsSettings : public QSlider {
 
 public:
     InternalsSettings(const QString& newText, const unsigned int newValue, const 
-        unsigned int newMinValue, const unsigned int newMaxValue, QSlider* parent = nullptr);
+        unsigned int newMinValue, const unsigned int newMaxValue, const QString& settingsPlace,
+        std::shared_ptr<QSettings> settings, QSlider* parent = nullptr);
 
     void resizeEvent(QResizeEvent* event);
     unsigned int getValue() const;
 
 private:
+    std::shared_ptr<spdlog::logger> logger = nullptr;
+    std::shared_ptr<QSettings> settings = nullptr;
+    QString settingsPlace;
     unsigned int value;
     double fontSize = 0;
     QString text;

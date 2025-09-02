@@ -64,39 +64,11 @@ namespace nScore {
         p.fillRect(rect(), QColor(UISettings::colorBackgroundScore));
     }
 
-    QFont findBestSizeFont(int height, int width, QFont font, QString text, int maxSize = 64,
-                           int minSize = 1) {
-        while (minSize <= maxSize) {
-            int currentSize = (minSize + maxSize) / 2;
-            font.setPointSize(currentSize);
-            QFontMetrics fm(font);
-                        
-            int textW = fm.horizontalAdvance(text);
-            int textH = fm.height();
-                        
-            if (textW > width || textH > height) {
-                maxSize = currentSize - 1;
-            } else {
-                minSize = currentSize + 1;
-            }
-        }
-        font.setPointSize(maxSize);
-        return font;
-    }
-
-    QFont workWithButton(QPushButton* button) {
-        int widthButton = button->size().width() - 8;
-        int heightButton = button->size().height() - 4;
-        QFont fontButton = button->font();
-        QString textButton = button->text();
-        return findBestSizeFont(heightButton, widthButton, fontButton, textButton);
-    }
-
     void Score::resizeEvent(QResizeEvent* event) {
         QWidget::resizeEvent(event);
 
-        QFont fontRestartButton = workWithButton(restartButton);
-        QFont fontMenuButton = workWithButton(menuButton);
+        QFont fontRestartButton = UISettings::workWithButton(restartButton);
+        QFont fontMenuButton = UISettings::workWithButton(menuButton);
         
         int minSizeFont = std::min(fontMenuButton.pointSize(), fontRestartButton.pointSize());
         QFont commonFont = fontMenuButton;
