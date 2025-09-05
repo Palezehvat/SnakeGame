@@ -39,16 +39,22 @@ public:
     void stopAnimation();
     void continueAnimation();
     void restart(unsigned int height, unsigned int width);
+    void setCollision(qreal t);
+    qreal computeCollision(const QPoint& head, nSnake::Movement dir);
 
 private:
+    bool collisionAnimation;
+    qreal collision;
     QColor colorEvenField;
     QColor colorOddField;
     QColor colorBackground;
+    qreal epsilon;
     qreal headRenderAngle = 0.0;
     bool headAngleInitialized = false;
     qreal sizeCell;
     unsigned int heightBoard;
     unsigned int widthBoard;
+    qreal widthBody;
     bool animationFrozen;
     qreal pausedT;
     std::shared_ptr<spdlog::logger> logger = nullptr;

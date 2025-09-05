@@ -110,14 +110,25 @@ namespace nGameController {
         }
         
         if (collusion || isGameOver) {
-            score->showGameOverScreen();
             gameTimer->stop();
             emit gameOver();
-            board->stopAnimation();
             isGameOver = true;
+
+            qreal collisionT = board->computeCollision(snake->getBody().back(),
+                                                    snake->getCurrentDirection());
+            board->setCollision(collisionT);
+
+            lastMoveTime = QDateTime::currentMSecsSinceEpoch();
+            board->setLastMoveTime(lastMoveTime);
+            snake->move();
+
+            QTimer::singleShot(300, [this]() {
+                score->showGameOverScreen();
+                board->stopAnimation();
+            });
             return;
         }
-        
+
         lastMoveTime = QDateTime::currentMSecsSinceEpoch();
         board->setLastMoveTime(lastMoveTime);
 

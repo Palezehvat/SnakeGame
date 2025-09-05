@@ -13,6 +13,9 @@ namespace nGameView {
         
         heightBoard = height;
         widthBoard = width;
+        epsilon = sizeCell / 10;
+        widthBody = sizeCell * 0.5;
+        collision = 1.0;
 
         colorEvenField = QColor(UISettings::colorEvenFieldInGame);
         colorOddField = QColor(UISettings::colorOddFieldInGame);
@@ -167,7 +170,6 @@ namespace nGameView {
         p.rotate(angle);
         
         QPainterPath headPath;
-        const qreal epsilon = sizeCell / 10;
 
         QPointF p1 = { -sizeCell / 2, sizeCell / 6 };
         QPointF p2 = { -sizeCell / 6, sizeCell / 2 - epsilon };
@@ -208,8 +210,12 @@ namespace nGameView {
 
     void GameView::stopAnimation() {
         animationFrozen = true;
-        pausedT = (qreal)(QDateTime::currentMSecsSinceEpoch() 
-                                  - lastMoveTime) / gameUpdateIntervalMs;
+        if (collisionAnimation) {
+            pausedT = collision;
+        } else {
+            pausedT = (qreal)(QDateTime::currentMSecsSinceEpoch() 
+                                      - lastMoveTime) / gameUpdateIntervalMs;
+        }
         update();
         this->setFocus(Qt::OtherFocusReason);
     }
@@ -218,18 +224,95 @@ namespace nGameView {
         animationFrozen = false;
         this->setFocus(Qt::OtherFocusReason);
     }
+
+    void GameView::setCollision(qreal t) {
+        collisionAnimation = true;
+        collision = t;
+    }
+
+    qreal GameView::computeCollision(const QPoint& head, nSnake::Movement dir) {
+        int offsetX = (width() - widthBoard * sizeCell) / 2;
+        int offsetY = (height() - heightBoard * sizeCell) / 2;
+
+        QPointF headCenter(
+            head.x() * sizeCell + sizeCell/2 + offsetX,
+            head.y() * sizeCell + sizeCell/2 + offsetY
+        );
+
+        QPointF direction;
+        switch (dir) {
+            case nSnake::Movement::Up:    direction = {0, -1}; break;
+            case nSnake::Movement::Down:  direction = {0, 1}; break;
+            case nSnake::Movement::Left:  direction = {-1, 0}; break;
+            case nSnake::Movement::Right: direction = {1, 0}; break;
+        }
+        QPointF directionForNoseA = direction * ((sizeCell / 2));
+
+        QPointF noseA = headCenter + directionForNoseA;
+        QPointF noseB = noseA + direction * sizeCell;
+        QPointF d = noseB - noseA;
+
+        QLineF path(noseA, noseB);
+
+        qreal maxT = 1.0;
+
+        // Столкновения со стенами
+
+        QRectF boardRect(offsetX, offsetY, widthBoard * sizeCell, heightBoard * sizeCell);
+        QList<QLineF> walls = {
+            QLineF(boardRect.topLeft(), boardRect.topRight()),
+            QLineF(boardRect.topRight(), boardRect.bottomRight()),
+            QLineF(boardRect.bottomRight(), boardRect.bottomLeft()),
+            QLineF(boardRect.bottomLeft(), boardRect.topLeft())
+        };
+        for (auto& wall : walls) {
+            QPointF hit;
+            if (path.intersects(wall, &hit) == QLineF::BoundedIntersection) {
+                qreal dist = QLineF(noseA, hit).length();
+                maxT = std::min(maxT, dist / sizeCell);
+            }
+        }
+
+        // Столкновения с телом змеи
+        qreal radius = widthBody / 2.0 + 0.5;
+
+        auto testCircle = [&](QPointF center){
+            // Решаем |f + d * t|^2 = r^2
+            QPointF f = noseA - center;
+            double a = d.x()*d.x() + d.y()*d.y();
+            double b = 2.0 * (f.x()*d.x() + f.y()*d.y());
+            double c = f.x()*f.x() + f.y()*f.y() - radius*radius;
+            double disc = b*b - 4.0*a*c;
+            if (disc < 0.0) return; // нет пересечений
+            double sqrtD = std::sqrt(disc);
+            double t1 = (-b - sqrtD) / (2.0 * a);
+            double t2 = (-b + sqrtD) / (2.0 * a);
+            if (t1 >= 0.0 && t1 <= 1.0) maxT = std::min(maxT, (qreal)t1);
+            if (t2 >= 0.0 && t2 <= 1.0) maxT = std::min(maxT, (qreal)t2);
+        };
+
+        const auto body = snake->getBody();
+
+        for (size_t i = 0; i < body.size() - 1; ++i) {
+            QPointF center(body[i].x() * sizeCell + sizeCell/2.0,
+                           body[i].y() * sizeCell + sizeCell/2.0);
+            testCircle(center);
+        }
+
+        return std::clamp(maxT, (qreal)0.0, (qreal)1.0);
+    }
     
     void GameView::drawSnake(QPainter& painter) {
         auto body = snake->getBody();
         if (body.empty()) return;
     
         qreal t = (qreal)(QDateTime::currentMSecsSinceEpoch() - lastMoveTime) / gameUpdateIntervalMs;
-        if (t > 1.0) t = 1.0;
-    
+
+        qreal maxT = collisionAnimation ? collision : 1.0;
+        if (t > maxT) t = maxT;
+
         std::vector<QPointF> interpolatedBody = snake->getInterpolatedBody(t);
         if (interpolatedBody.size() < 2) return;
-
-        const qreal widthBody = sizeCell * 0.5;
 
         QPointF tailPoint(
             interpolatedBody[0].x() * sizeCell + sizeCell / 2,
@@ -287,8 +370,6 @@ namespace nGameView {
     
         qreal smoothingFactor = 0.50;
         headRenderAngle += delta * smoothingFactor;
-    
-        QPointF localBase(-sizeCell/2 * 0.8, 0.0);
 
         QTransform rot;
         rot.rotate(headRenderAngle);
@@ -333,7 +414,7 @@ namespace nGameView {
         int w = event->size().width();
         int h = event->size().height();
         sizeCell = std::min(w / widthBoard, h / heightBoard);
-    
+        widthBody = sizeCell * 0.5;
         update();
         logger->info("Размер игрового окна в GameView успешно изменён");
     }
@@ -389,6 +470,8 @@ namespace nGameView {
     }
 
     void GameView::restart(unsigned int height, unsigned int width) {
+        collisionAnimation = false;
+        collision = 1.0;
         widthBoard = width;
         heightBoard = height;
         frameTimer->start(16);

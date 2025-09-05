@@ -49,6 +49,10 @@ private:
     QTimer* gameTimer;
     bool isPause;
     bool isGameOver;
+    bool isCrashing;
+    qreal crashAnimationT;
+    qreal crashLimitN;
+    QPoint crashTargetPosition;
 
     void initBoard(unsigned int numberOfCellsInWidth,
                    unsigned int numberOfCellsInHeight);
