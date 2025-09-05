@@ -4,8 +4,9 @@ namespace nGameView {
 
     GameView::GameView(nGameController::GameController* controller, int gameUpdateInterval,
                 unsigned int height, unsigned int width, 
-                std::shared_ptr<std::unordered_map<QString, int>> keys, QWidget* parent) 
-                : QWidget(parent), keys(keys) {        
+                std::shared_ptr<std::unordered_map<QString, int>> keys,
+                std::shared_ptr<std::queue<nSnake::Movement>> moves, QWidget* parent) 
+                : QWidget(parent), keys(keys), moves(moves) {        
         logger = Log::Logger::getLogger();
 
         sizeCell = UISettings::currentSizeCell;
@@ -76,9 +77,9 @@ namespace nGameView {
         );
         
         QLinearGradient bodyGrad(QPointF(-r, -r), QPointF(r, r));
-        bodyGrad.setColorAt(0.0, QColor("#d63434"));
-        bodyGrad.setColorAt(0.5, QColor("#ff4d4d"));
-        bodyGrad.setColorAt(1.0, QColor("#d63434"));
+        bodyGrad.setColorAt(0.0, QColor(UISettings::firstColorApple));
+        bodyGrad.setColorAt(0.5, QColor(UISettings::secondColorApple));
+        bodyGrad.setColorAt(1.0, QColor(UISettings::firstColorApple));
 
         // Палка //
         qreal stemHeight = r * 0.6;
@@ -96,8 +97,8 @@ namespace nGameView {
         QPainterPath stemPath;
         stemPath.addRect(stemRect);
         QLinearGradient stemGrad(stemRect.topLeft(), stemRect.bottomRight());
-        stemGrad.setColorAt(0.0, QColor("#5a3c0a"));
-        stemGrad.setColorAt(1.0, QColor("#8b5e2b"));
+        stemGrad.setColorAt(0.0, QColor(UISettings::firstColorStickApple));
+        stemGrad.setColorAt(1.0, QColor(UISettings::secondColorStickApple));
 
         p.setRenderHint(QPainter::Antialiasing, true);
 
@@ -151,7 +152,7 @@ namespace nGameView {
         qreal widthEyes = sizeCell / 7;
         qreal heightEyes = sizeCell / 7;
 
-        p.setBrush(QColor("#e8ba31"));
+        p.setBrush(QColor(UISettings::colorEyesSnake));
         p.setPen(Qt::NoPen);
         p.drawEllipse(QPointF(0, 0), heightEyes, widthEyes);
         p.setBrush(Qt::black);
@@ -187,24 +188,11 @@ namespace nGameView {
         QPointF back(-sizeCell / 2, 0);
 
         QLinearGradient headGradient(back, nose);
-        headGradient.setColorAt(0.0, QColor("#278017"));
-        headGradient.setColorAt(0.5, QColor("#23c706"));
-        headGradient.setColorAt(1.0, QColor("#278017"));
+        headGradient.setColorAt(0.0, QColor(UISettings::firstColorSnake));
+        headGradient.setColorAt(0.5, QColor(UISettings::secondColorSnake));
+        headGradient.setColorAt(1.0, QColor(UISettings::firstColorSnake));
                 
         p.fillPath(headPath, QBrush(headGradient));
-        
-        // Глаз. Странный вариант
-        
-        // qreal widthEyes = sizeCell / 6;
-        // qreal heightEyes = sizeCell / 3;
-        
-        // p.setBrush(Qt::white);
-        // p.setPen(Qt::NoPen);
-        // p.drawEllipse((p3 - p2) / 2, widthEyes, heightEyes);
-        // p.drawEllipse((p4 - p3) / 2, widthEyes, heightEyes);
-        // p.setBrush(Qt::black);
-        // p.drawEllipse((p3 - p2) / 2, widthEyes / 4, heightEyes / 4);
-        // p.drawEllipse((p4 - p3) / 2, widthEyes / 4, heightEyes / 4);
         
         drawEyes(p, p2, p3);
         drawEyes(p, p4, p5);
@@ -238,7 +226,7 @@ namespace nGameView {
         qreal t = (qreal)(QDateTime::currentMSecsSinceEpoch() - lastMoveTime) / gameUpdateIntervalMs;
         if (t > 1.0) t = 1.0;
     
-        auto interpolatedBody = snake->getInterpolatedBody(t);
+        std::vector<QPointF> interpolatedBody = snake->getInterpolatedBody(t);
         if (interpolatedBody.size() < 2) return;
 
         const qreal widthBody = sizeCell * 0.5;
@@ -255,9 +243,9 @@ namespace nGameView {
 
         QLinearGradient gradient(tailPoint, headPoint);
 
-        gradient.setColorAt(0.0, QColor("#278017"));
-        gradient.setColorAt(0.5, QColor("#23c706"));
-        gradient.setColorAt(1.0, QColor("#278017"));
+        gradient.setColorAt(0.0, QColor(UISettings::firstColorSnake));
+        gradient.setColorAt(0.5, QColor(UISettings::secondColorSnake));
+        gradient.setColorAt(1.0, QColor(UISettings::firstColorSnake));
     
         QPen snakePen(QBrush(gradient), widthBody);
         snakePen.setWidthF(widthBody);
@@ -277,9 +265,10 @@ namespace nGameView {
             QPointF p1(interpolatedBody[i + 1].x() * sizeCell + sizeCell / 2,
                        interpolatedBody[i + 1].y() * sizeCell + sizeCell / 2);
             QPointF control = (p0 + p1) / 2.0;
+
             snakePath.quadTo(p0, control);
         }
-        
+
         // Шея
         QPointF neckPoint(
             interpolatedBody[interpolatedBody.size()-2].x() * sizeCell + sizeCell / 2,
@@ -303,9 +292,8 @@ namespace nGameView {
 
         QTransform rot;
         rot.rotate(headRenderAngle);
-        QPointF basePoint = headPoint + rot.map(localBase);
     
-        snakePath.lineTo(basePoint);
+        snakePath.quadTo(neckPoint, headPoint);
     
         painter.drawPath(snakePath);
     
@@ -378,13 +366,13 @@ namespace nGameView {
     void GameView::keyPressEvent(QKeyEvent* event) {
         int key = event->key();
         if (key == (*keys)["up"]) {
-            controller->changeDirection(nSnake::Movement::Up);
+            moves->push(nSnake::Movement::Up);
         } else if (key == (*keys)["down"]) {
-            controller->changeDirection(nSnake::Movement::Down);
+            moves->push(nSnake::Movement::Down);
         } else if (key == (*keys)["left"]) {
-            controller->changeDirection(nSnake::Movement::Left);
+            moves->push(nSnake::Movement::Left);
         } else if (key == (*keys)["right"]) {
-            controller->changeDirection(nSnake::Movement::Right);
+            moves->push(nSnake::Movement::Right);
         } else if (key == (*keys)["pause"]) {
             controller->setPause();
         } else if (key == (*keys)["restart"]) {

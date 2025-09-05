@@ -8,6 +8,7 @@
 #include <QPainterPath>
 #include <QApplication>
 #include <iostream>
+#include <queue>
 #include "logger.h"
 #include "gameboard.h"
 #include "food.h"
@@ -27,7 +28,8 @@ class GameView : public QWidget {
 public:
     GameView(nGameController::GameController* controller, int gameUpdateInterval,
              unsigned int height, unsigned int width,
-             std::shared_ptr<std::unordered_map<QString, int>> keys, QWidget* parent = nullptr);
+             std::shared_ptr<std::unordered_map<QString, int>> keys, 
+             std::shared_ptr<std::queue<nSnake::Movement>>, QWidget* parent = nullptr);
     void setGameBoard(std::shared_ptr<nGameBoard::GameBoard> board);
     void setFood(std::shared_ptr<nFood::Food> food);
     void setSnake(std::shared_ptr<nSnake::Snake> snake);
@@ -54,7 +56,8 @@ private:
     std::shared_ptr<nFood::Food> food = nullptr;
     std::shared_ptr<nSnake::Snake> snake = nullptr;
     nGameController::GameController* controller = nullptr;
-    std::shared_ptr<std::unordered_map<QString, int>> keys;
+    std::shared_ptr<std::unordered_map<QString, int>> keys = nullptr;
+    std::shared_ptr<std::queue<nSnake::Movement>> moves = nullptr;
     QTimer* frameTimer = nullptr;
     qint64 lastMoveTime = 0;
     int gameUpdateIntervalMs;

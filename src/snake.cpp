@@ -1,4 +1,5 @@
 #include "snake.h"
+#include <iostream>
 
 namespace nSnake {
     Snake::Snake(unsigned int width, unsigned int height) : 
@@ -101,8 +102,11 @@ namespace nSnake {
         return partMove(currBody.back(), nextDirection);
     }
 
+    /*
+    
     std::vector<QPointF> Snake::getInterpolatedBody(qreal t) {
         std::vector<QPointF> result;
+        qreal delta = 0.005;
         
         if (currBody.size() > prevBody.size()) {
             result.push_back(prevBody.front() * (1.0 - t) + currBody.front() * t);
@@ -110,6 +114,33 @@ namespace nSnake {
             for (size_t i = 1; i < currBody.size(); ++i) {
                 QPointF start = prevBody[i - 1];
                 QPointF end = currBody[i];
+                result.push_back(start * (1.0 - t) + end * t);
+            }
+        } else {
+            for (size_t i = 0; i < currBody.size(); ++i) {
+                QPointF start = prevBody[i];
+                QPointF end = currBody[i];
+                QPointF interpolated = start * (1.0 - t) + end * t;
+                result.push_back(interpolated);
+            }
+        }
+        return result;
+    }
+    */
+
+    std::vector<QPointF> Snake::getInterpolatedBody(qreal t) {
+        std::vector<QPointF> result;
+    
+        if (currBody.size() > prevBody.size()) {
+            result.push_back(QPointF(currBody.front()));
+
+            for (size_t i = 1; i < currBody.size(); ++i) {
+                QPointF start = prevBody[i - 1];
+                QPointF end = currBody[i];
+                if (i == 1) {
+                    start = currBody.front();
+                }
+    
                 result.push_back(start * (1.0 - t) + end * t);
             }
         } else {

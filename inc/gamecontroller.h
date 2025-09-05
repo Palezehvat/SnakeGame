@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QDateTime>
-#include <iostream>
+#include <queue>
 #include "settings.h"
 #include "gameboard.h"
 #include "food.h"
@@ -39,6 +39,7 @@ private:
     std::shared_ptr<nScore::Score> score = nullptr;
     std::shared_ptr<nGamePanel::GamePanel> panel = nullptr;
     std::shared_ptr<nSettings::Settings> settings = nullptr;
+    std::shared_ptr<std::queue<nSnake::Movement>> moves = nullptr;
 
     unsigned int numberOfCellsInHeight;
     unsigned int numberOfCellsInWidth;
@@ -52,6 +53,7 @@ private:
     void initBoard(unsigned int numberOfCellsInWidth,
                    unsigned int numberOfCellsInHeight);
     void spawnFood();
+    void clearQueueOfMoves(std::shared_ptr<std::queue<nSnake::Movement>>& moves);               
 signals:
     void gameOver();
 }; // GameController

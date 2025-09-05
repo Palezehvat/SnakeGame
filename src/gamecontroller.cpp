@@ -8,6 +8,7 @@ namespace nGameController {
         
         numberOfCellsInHeight = settings->getHeight();
         numberOfCellsInWidth = settings->getWidth();
+        moves = std::make_shared<std::queue<nSnake::Movement>>();
 
         gameTimer = new QTimer(this);
         connect(gameTimer, &QTimer::timeout, this, &GameController::update);
@@ -42,7 +43,7 @@ namespace nGameController {
         gameBoard = std::make_shared<nGameBoard::GameBoard>();
         gameBoard->createBoard(numberOfCellsInWidth, numberOfCellsInHeight);
         board = std::make_unique<nGameView::GameView>(this, gameUpdateIntervalMs,
-                        numberOfCellsInHeight, numberOfCellsInWidth, settings->getKeys());
+                        numberOfCellsInHeight, numberOfCellsInWidth, settings->getKeys(), moves);
         board->setGameBoard(gameBoard);
     }
 
@@ -87,6 +88,11 @@ namespace nGameController {
     }
 
     void GameController::update() {
+        if (!moves->empty()) {
+            changeDirection(moves->front());
+            moves->pop();
+        }
+
         QPoint headPositionAfterMove = snake->getNextHeadPosition();
 
         bool collusion = false;
@@ -135,9 +141,15 @@ namespace nGameController {
         snake->setDirection(newDirection);
     }
 
+    void GameController::clearQueueOfMoves(std::shared_ptr<std::queue<nSnake::Movement>>& moves) {
+        std::queue<nSnake::Movement> empty;
+        std::swap((*moves), empty );
+    }
+
     void GameController::restart() {
         isPause = false;
         isGameOver = false;
+        clearQueueOfMoves(moves);
         numberOfCellsInHeight = settings->getHeight();
         numberOfCellsInWidth = settings->getWidth();
 

@@ -28,6 +28,15 @@ namespace UISettings {
     const QString colorBackgroundInGame        = "#568b33";
     const QString colorBackgroundScore         = "#aad840";
 
+    const QString firstColorSnake              = "#278017";
+    const QString secondColorSnake             = "#23c706";
+    const QString colorEyesSnake               = "#e8ba31";
+
+    const QString firstColorApple              = "#d63434";
+    const QString secondColorApple             = "#ff4d4d";
+    const QString firstColorStickApple         = "#5a3c0a";
+    const QString secondColorStickApple        = "#8b5e2b";
+
     const QString backgroundPathMainMenu       = "/../images/mainmenu/background.png";
     const QString settingsIconPathMainMenu     = "/../images/mainmenu/iconSettings.png";
 
