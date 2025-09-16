@@ -2,7 +2,7 @@
 
 namespace nSettings {
     Settings::Settings(QWidget* parent) : QWidget(parent) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
 
         settings = std::make_shared<QSettings>();
 

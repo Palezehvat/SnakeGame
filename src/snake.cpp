@@ -1,23 +1,24 @@
 #include "snake.h"
-#include <iostream>
 
 namespace nSnake {
     Snake::Snake(unsigned int width, unsigned int height) : 
                  numberOfCellsWidth(width), numberOfCellsHeight(height) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         currentDirection = Right;
         nextDirection = Right;
     
         QPoint headPosition = {2, 0};
         QPoint bodyPosition = {1, 0};
         QPoint tailPosition = {0, 0};
+
+        currBody = std::make_shared<std::vector<QPoint>>();
     
-        currBody.push_back(tailPosition);
-        currBody.push_back(bodyPosition);
-        currBody.push_back(headPosition);
+        currBody->push_back(tailPosition);
+        currBody->push_back(bodyPosition);
+        currBody->push_back(headPosition);
     
-        prevBody = currBody;
-    
+        prevBody = std::make_shared<std::vector<QPoint>>(*currBody);
+
         logger->info("Инициализация змеи прошла успешно");
     }
 
@@ -43,21 +44,21 @@ namespace nSnake {
 
     QPoint Snake::move() {
         currentDirection = nextDirection;
-        prevBody = currBody;
+        prevBody = std::make_shared<std::vector<QPoint>>(*currBody);
         std::optional<QPoint> removeTailPos = std::nullopt;
-        QPoint newHead = partMove(currBody.back(), currentDirection);
-        currBody.push_back(newHead);
+        QPoint newHead = partMove(currBody->back(), currentDirection);
+        currBody->push_back(newHead);
         if (growPending > 0) {
             --growPending;
         } else {
-            currBody.erase(currBody.begin());
+            currBody->erase(currBody->begin());
         }
         logger->info(fmt::format("Змея сделала движение в направлении: {}",
             stringFormatMovement(currentDirection)));
-        return currBody[currBody.size() - 1];
+        return (*currBody)[currBody->size() - 1];
     }
 
-    void Snake::setDirection(Movement newDirection) {
+    void Snake::setNextDirection(Movement newDirection) {
         if (currentDirection == Left && newDirection == Right ||
             currentDirection == Right && newDirection == Left ||
             currentDirection == Up && newDirection == Down ||
@@ -73,15 +74,15 @@ namespace nSnake {
     }
 
     bool Snake::checkCollusionWalls() const {
-        const QPoint& head = currBody.back();
+        const QPoint& head = currBody->back();
         return head.x() < 0 || head.x() >= numberOfCellsWidth ||
                head.y() < 0 || head.y() >= numberOfCellsHeight;
     }
 
     bool Snake::checkCollusionBody() const {
-        const QPoint& head = currBody.back();
-        for (size_t i = 0; i + 1 < currBody.size(); ++i) {
-            if (currBody[i] == head) return true;
+        const QPoint& head = currBody->back();
+        for (size_t i = 0; i + 1 < currBody->size(); ++i) {
+            if ((*currBody)[i] == head) return true;
         }
         return false;
     }
@@ -90,37 +91,33 @@ namespace nSnake {
         return Snake::checkCollusionWalls() || Snake::checkCollusionBody();
     }
 
-    const std::vector<QPoint> Snake::getBody() const {
+    std::shared_ptr<std::vector<QPoint>> Snake::getBody() const {
         return currBody;
     }
 
-    const std::vector<QPoint> Snake::getPrevBody() const {
-        return prevBody;
-    }
-
     QPoint Snake::getNextHeadPosition() const {
-        return partMove(currBody.back(), nextDirection);
+        return partMove(currBody->back(), nextDirection);
     }
 
     std::vector<QPointF> Snake::getInterpolatedBody(qreal t) {
         std::vector<QPointF> result;
     
-        if (currBody.size() > prevBody.size()) {
-            result.push_back(QPointF(currBody.front()));
+        if (currBody->size() > prevBody->size()) {
+            result.push_back(QPointF(currBody->front()));
 
-            for (size_t i = 1; i < currBody.size(); ++i) {
-                QPointF start = prevBody[i - 1];
-                QPointF end = currBody[i];
+            for (size_t i = 1; i < currBody->size(); ++i) {
+                QPointF start = (*prevBody)[i - 1];
+                QPointF end = (*currBody)[i];
                 if (i == 1) {
-                    start = currBody.front();
+                    start = currBody->front();
                 }
     
                 result.push_back(start * (1.0 - t) + end * t);
             }
         } else {
-            for (size_t i = 0; i < currBody.size(); ++i) {
-                QPointF start = prevBody[i];
-                QPointF end = currBody[i];
+            for (size_t i = 0; i < currBody->size(); ++i) {
+                QPointF start = (*prevBody)[i];
+                QPointF end = (*currBody)[i];
                 QPointF interpolated = start * (1.0 - t) + end * t;
                 result.push_back(interpolated);
             }
@@ -141,16 +138,16 @@ namespace nSnake {
         currentDirection = Right;
         nextDirection = Right;
 
-        currBody.clear();
-        prevBody.clear();
+        currBody->clear();
+        prevBody->clear();
 
         QPoint headPosition = {2, 0};
         QPoint bodyPosition = {1, 0};
         QPoint tailPosition = {0, 0};
     
-        currBody.push_back(tailPosition);
-        currBody.push_back(bodyPosition);
-        currBody.push_back(headPosition);
+        currBody->push_back(tailPosition);
+        currBody->push_back(bodyPosition);
+        currBody->push_back(headPosition);
     
         prevBody = currBody;
     }

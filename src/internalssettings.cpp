@@ -7,7 +7,7 @@ namespace nInternalsSettings {
         std::shared_ptr<QSettings> settings, QSlider* parent) : QSlider(Qt::Horizontal, parent),
         text(newText), settingsPlace(settingsPlace), settings(settings) {
 
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
 
         isHovered = false;
 

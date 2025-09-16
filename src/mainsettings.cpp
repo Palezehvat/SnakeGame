@@ -2,7 +2,7 @@
 
 namespace nMainSettings {
     MainSettings::MainSettings(QWidget* parent) : QWidget(parent) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
 
         setAutoFillBackground(false);
 

@@ -3,9 +3,9 @@
 namespace nGameController {
     GameController::GameController(std::shared_ptr<nSettings::Settings> settings,
         QObject* parent) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         this->settings = settings;
-        
+
         numberOfCellsInHeight = settings->getHeight();
         numberOfCellsInWidth = settings->getWidth();
         moves = std::make_shared<std::queue<nSnake::Movement>>();
@@ -26,6 +26,7 @@ namespace nGameController {
         initBoard(numberOfCellsInWidth, numberOfCellsInHeight);
         food = std::make_shared<nFood::Food>();
         snake = std::make_shared<nSnake::Snake>(numberOfCellsInWidth, numberOfCellsInHeight);
+        currBodySnake = snake->getBody();
         spawnFood();
         board->setFood(food);
         board->setSnake(snake);
@@ -50,13 +51,11 @@ namespace nGameController {
     void GameController::spawnFood() {
         std::vector<QPoint> emptyCells = gameBoard->getEmptyCells();
         
-        const auto& snakeBody = snake->getBody();
-        
         std::vector<QPoint> trulyEmptyCells;
         std::copy_if(emptyCells.begin(), emptyCells.end(), std::back_inserter(trulyEmptyCells),
-            [&snakeBody](const QPoint& cell) {
+            [=](const QPoint& cell) {
                 // Копируем клетку, только если она не найдена в теле змеи
-                return std::find(snakeBody.begin(), snakeBody.end(), cell) == snakeBody.end();
+                return std::find(currBodySnake->begin(), currBodySnake->end(), cell) == currBodySnake->end();
             });
 
         if (!trulyEmptyCells.empty()) {
@@ -101,9 +100,8 @@ namespace nGameController {
             headPositionAfterMove.y() < 0 || headPositionAfterMove.y() >= numberOfCellsInHeight) {
             collusion = true; // Вышла за пределы поля
         } else {
-            const std::vector<QPoint> currBody = snake->getBody();
-            for(auto partSnake : currBody) {
-                if (partSnake == headPositionAfterMove && headPositionAfterMove != currBody[0]) {
+            for(auto partSnake : (*currBodySnake)) {
+                if (partSnake == headPositionAfterMove && headPositionAfterMove != (*currBodySnake)[0]) {
                     collusion = true; // Врезалась в себя
                 }
             }
@@ -114,7 +112,7 @@ namespace nGameController {
             emit gameOver();
             isGameOver = true;
 
-            qreal collisionT = board->computeCollision(snake->getBody().back(),
+            qreal collisionT = board->computeCollision(currBodySnake->back(),
                                                     snake->getCurrentDirection());
             board->setCollision(collisionT);
 
@@ -123,7 +121,6 @@ namespace nGameController {
             snake->move();
 
             QTimer::singleShot(300, [this]() {
-                score->showGameOverScreen();
                 board->stopAnimation();
             });
             return;
@@ -149,7 +146,7 @@ namespace nGameController {
 
     void GameController::changeDirection(nSnake::Movement newDirection) {
         if (isGameOver) return;
-        snake->setDirection(newDirection);
+        snake->setNextDirection(newDirection);
     }
 
     void GameController::clearQueueOfMoves(std::shared_ptr<std::queue<nSnake::Movement>>& moves) {
@@ -168,7 +165,7 @@ namespace nGameController {
 
         gameBoard->restart(numberOfCellsInWidth, numberOfCellsInHeight);
         snake->restart(numberOfCellsInWidth, numberOfCellsInHeight);
-        food->restart();
+        food->clear();
         spawnFood();
 
         score->restart();

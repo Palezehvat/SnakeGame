@@ -7,7 +7,7 @@ namespace nGamePanel {
     GamePanel::GamePanel(std::shared_ptr<nGameView::GameView> board,
         std::shared_ptr<nScore::Score> score, QWidget* parent) {
         
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         
         this->score = score;
         this->board = board;

@@ -2,7 +2,7 @@
 
 namespace nFood {
     Food::Food() {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         logger->info("Класс Food успешно инициализирован");
     }
 
@@ -27,9 +27,5 @@ namespace nFood {
 
     std::optional<QPoint> Food::getPosition() const {
         return position;
-    }
-
-    void Food::restart() {
-        clear();
     }
 }

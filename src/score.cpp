@@ -3,7 +3,7 @@
 namespace nScore {
 
     Score::Score(QWidget* parent) : QWidget(parent) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         apple = std::make_unique<nAppleWidget::AppleWidget>();
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
@@ -77,12 +77,6 @@ namespace nScore {
         menuButton->setFont(commonFont);
         restartButton->setFont(commonFont);
         pauseButton->setFont(commonFont);
-
-        //QFont fontPauseButton = workWithButton(pauseButton);
-    }
-
-    void Score::showGameOverScreen() {
-        ;
     }
 
     void Score::updateCounter() {

@@ -2,7 +2,7 @@
 
 namespace nGameBoard {
     GameBoard::GameBoard() {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         logger->info("Класс GameBoard успешно инициализирован");
     }
 

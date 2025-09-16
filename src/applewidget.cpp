@@ -5,7 +5,7 @@
 namespace nAppleWidget {
     
     AppleWidget::AppleWidget(QWidget* parent) : QWidget(parent), counter(0) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         counter = 0;
     }

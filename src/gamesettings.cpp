@@ -3,7 +3,7 @@
 namespace nGameSettings {
     GameSettings::GameSettings(std::shared_ptr<QSettings> settings, QWidget* parent) :
                                QWidget(parent), settings(settings) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
 
         setAutoFillBackground(false);
 

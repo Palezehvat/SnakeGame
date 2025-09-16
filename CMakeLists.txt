@@ -12,7 +12,11 @@ set(CMAKE_AUTOUIC ON)
 
 include_directories(inc)
 
+find_package(GTest REQUIRED)
+enable_testing()
+
 # ----- Modules ----- #
+add_subdirectory(tests)
 
 add_library(logger STATIC src/logger.cpp)
 set_target_properties(logger PROPERTIES POSITION_INDEPENDENT_CODE ON)

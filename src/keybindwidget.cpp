@@ -7,7 +7,7 @@ namespace nKeyBindWidget {
     std::shared_ptr<std::unordered_map<QString, int>> keys, QWidget* parent) : QPushButton(parent),
     action(actionName), settings(settings), settingsPlace(settingsPlace), keys(keys),
     placeInMap(placeInMap) {
-        logger = Log::Logger::getLogger();
+        logger = nLogger::Logger::getLogger();
         key = currentKey;
         this->setStyleSheet(UISettings::styleToButton);
         waitingForKey = false;

@@ -6,13 +6,12 @@ namespace nGameView {
                 unsigned int height, unsigned int width, 
                 std::shared_ptr<std::unordered_map<QString, int>> keys,
                 std::shared_ptr<std::queue<nSnake::Movement>> moves, QWidget* parent) 
-                : QWidget(parent), keys(keys), moves(moves) {        
-        logger = Log::Logger::getLogger();
+                : QWidget(parent), keys(keys), moves(moves), controller(controller),
+                heightBoard(height), widthBoard(width), gameUpdateIntervalMs(gameUpdateInterval) {        
+        logger = nLogger::Logger::getLogger();
 
         sizeCell = UISettings::currentSizeCell;
-        
-        heightBoard = height;
-        widthBoard = width;
+
         epsilon = sizeCell / 10;
         widthBody = sizeCell * 0.5;
         collision = 1.0;
@@ -23,9 +22,6 @@ namespace nGameView {
 
         setMinimumSize(UISettings::maxWidth * UISettings::currentSizeCell,
                        UISettings::maxHeight * UISettings::currentSizeCell);
-        
-        this->controller = controller;
-        this->gameUpdateIntervalMs = gameUpdateInterval;
 
         setFocusPolicy(Qt::StrongFocus); // Чтобы нажатия клавиш регистрировало
         setFocus();
@@ -291,11 +287,9 @@ namespace nGameView {
             if (t2 >= 0.0 && t2 <= 1.0) maxT = std::min(maxT, (qreal)t2);
         };
 
-        const auto body = snake->getBody();
-
-        for (size_t i = 0; i < body.size() - 1; ++i) {
-            QPointF center(body[i].x() * sizeCell + sizeCell/2.0,
-                           body[i].y() * sizeCell + sizeCell/2.0);
+        for (size_t i = 0; i < currBodySnake->size() - 1; ++i) {
+            QPointF center((*currBodySnake)[i].x() * sizeCell + sizeCell/2.0,
+                           (*currBodySnake)[i].y() * sizeCell + sizeCell/2.0);
             testCircle(center);
         }
 
@@ -304,7 +298,7 @@ namespace nGameView {
     
     void GameView::drawSnake(QPainter& painter) {
         auto body = snake->getBody();
-        if (body.empty()) return;
+        if (currBodySnake->empty()) return;
     
         qreal t = (qreal)(QDateTime::currentMSecsSinceEpoch() - lastMoveTime) / gameUpdateIntervalMs;
 
@@ -381,7 +375,7 @@ namespace nGameView {
         drawRotatedHead(painter, headPoint, headRenderAngle);
     }
 
-    void GameView::paintEvent(QPaintEvent*) {
+    void GameView::paintEvent(QPaintEvent* event) {
         //logger->info("Начался процесс отрисовки доски");
         QPainter p(this);
         p.fillRect(rect(), colorBackground);
@@ -438,6 +432,7 @@ namespace nGameView {
 
     void GameView::setSnake(std::shared_ptr<nSnake::Snake> snake) {
         this->snake = snake;
+        currBodySnake = snake->getBody();
     }
 
     void GameView::setLastMoveTime(qint64 lastMoveTime) {

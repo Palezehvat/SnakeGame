@@ -1,0 +1,64 @@
+name: Tests for snake game
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Download dependencies
+        run: |
+             run: |
+                  sudo apt-get update
+                  sudo apt-get install -y \
+                    build-essential \
+                    libgl1-mesa-dev \
+                    qt6-base-dev qt6-base-dev-tools qt6-tools-dev \
+                    qt6-wayland \
+                    libxkbcommon-dev \
+                    libspdlog-dev
+      - name: Create directory for build
+        run: mkdir build
+      - name: Build project
+        run: cd build && cmake .. && make
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Download dependencies
+        run: |
+             sudo apt-get update
+             sudo apt-install -y \
+             build-essential \
+              libgl1-mesa-dev \
+              qt6-base-dev qt6-base-dev-tools qt6-tools-dev \
+              qt6-wayland \
+              libxkbcommon-dev \
+              libspdlog-dev
+      - name: Create directory for build
+        run: mkdir build
+      - name: Build project
+        run: cd build && cmake .. && make
+      - name: Start Tests
+        run: ./tests/tests
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Download dependencies
+        run: |
+             sudo apt-get update
+             sudo apt-get install -y \
+               doxygen \
+               graphviz
+      - name: Generate documentation
+        run: doxygen
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

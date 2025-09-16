@@ -3,6 +3,8 @@
 
 namespace nMenu {
     Menu::Menu(QWidget* parent) : QWidget(parent) {
+        logger = nLogger::Logger::getLogger();
+
         mainLayout = new QVBoxLayout(this);
 
         showBackground();
@@ -32,8 +34,6 @@ namespace nMenu {
     void Menu::showBackground() {
         background = QPixmap(QCoreApplication::applicationDirPath() 
         + UISettings::backgroundPathMainMenu);
-
-        logger = Log::Logger::getLogger(); 
 
         if (background.isNull()) {
             logger->error("Не удалось подгрузить картинку, на задний фон экрана(главное меню)");

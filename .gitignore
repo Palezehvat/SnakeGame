@@ -4,6 +4,9 @@ build
 # Logs
 logs
 
+#documentation
+docs
+
 # Prerequisites
 *.d
 
