@@ -1,0 +1,18 @@
+<map id="inc/applewidget.h" name="inc/applewidget.h">
+<area shape="rect" id="Node000001" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="69,5,207,31"/>
+<area shape="rect" id="Node000002" href="$score_8h.html" title="Обёртка над счётом для игры" alt="" coords="92,79,184,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,44,141,79,135,79,135,44"/>
+<area shape="rect" id="Node000003" href="$gamecontroller_8h.html" title="Управление логикой игры" alt="" coords="10,225,165,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,118,115,153,93,226,88,224,110,151,125,116"/>
+<area shape="rect" id="Node000007" href="$gamepanel_8h.html" title="Визуальное объедение счёта и игровой части(поля)" alt="" coords="125,152,255,177"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="157,114,184,150,179,153,152,117"/>
+<area shape="rect" id="Node000004" href="$gameview_8h.html" title="Логика, связанная с отрисовкой игры" alt="" coords="5,299,129,324"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="74,264,66,299,61,298,69,263"/>
+<area shape="rect" id="Node000005" href="$mainwindow_8h.html" title="Основное окно приложения" alt="" coords="154,299,293,324"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="122,254,202,296,200,301,120,259"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="80,285,88,250,94,252,85,287"/>
+<area shape="rect" id="Node000006" href="$application_8h.html" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="159,372,288,397"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="226,338,226,372,221,372,221,338"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="164,187,106,227,103,223,161,183"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="198,190,223,298,218,299,193,192"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="inc/food.h" name="inc/food.h">
+<area shape="rect" id="Node000001" title="Логика, связанная с едой" alt="" coords="127,5,213,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,71,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,33,73,74,70,70,148,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="95,79,245,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,31,173,65,167,65,167,31"/>
+<area shape="rect" id="Node000004" href="$logger_8h.html" title="Логирование различных этапов программы" alt="" coords="270,79,345,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,28,274,70,272,75,191,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="143,152,221,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="289,106,216,147,213,143,286,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="245,152,369,177"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="310,104,310,138,305,138,305,104"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="393,152,571,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="336,102,442,144,440,149,334,106"/>
+</map>

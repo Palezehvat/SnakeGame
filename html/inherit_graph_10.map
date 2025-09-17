@@ -1,0 +1,21 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,219,84,244"/>
+<area shape="rect" id="Node000001" href="$classnAppleWidget_1_1AppleWidget.html" title="Класс для подсчёта съеденных яблок" alt="" coords="141,5,345,31"/>
+<area shape="poly" id="edge5_Node000000_Node000001" title=" " alt="" coords="48,205,57,168,73,124,97,79,130,41,151,29,154,33,134,45,101,82,78,126,62,169,53,206"/>
+<area shape="rect" id="Node000002" href="$classnControlSettings_1_1ControlSettings.html" title="Класс для настроек управления пользователем" alt="" coords="151,55,336,95"/>
+<area shape="poly" id="edge6_Node000000_Node000002" title=" " alt="" coords="55,205,84,154,105,128,130,105,151,93,154,98,134,109,109,131,88,157,59,208"/>
+<area shape="rect" id="Node000003" href="$classnGamePanel_1_1GamePanel.html" title="Класс для визуального объединения счёта и игровой части(поля)" alt="" coords="150,120,337,145"/>
+<area shape="poly" id="edge7_Node000000_Node000003" title=" " alt="" coords="64,206,94,179,131,154,160,143,162,148,133,159,97,183,68,210"/>
+<area shape="rect" id="Node000004" href="$classnGameSettings_1_1GameSettings.html" title="Класс для работы с игровыми настройками" alt="" coords="132,169,355,195"/>
+<area shape="poly" id="edge8_Node000000_Node000004" title=" " alt="" coords="97,213,131,203,180,192,181,197,133,209,98,218"/>
+<area shape="rect" id="Node000005" href="$classnGameView_1_1GameView.html" title=" " alt="" coords="154,219,333,244"/>
+<area shape="poly" id="edge9_Node000000_Node000005" title=" " alt="" coords="98,229,154,229,154,234,98,234"/>
+<area shape="rect" id="Node000006" href="$classnMainSettings_1_1MainSettings.html" title="Класс для визуальной страницы перехода к настройкам управления или настройкам игры" alt="" coords="139,268,347,293"/>
+<area shape="poly" id="edge10_Node000000_Node000006" title=" " alt="" coords="98,243,133,253,185,265,184,270,131,258,96,249"/>
+<area shape="rect" id="Node000007" href="$classnMenu_1_1Menu.html" title="Ответственен за визуальное отображение начального меню" alt="" coords="188,317,299,343"/>
+<area shape="poly" id="edge11_Node000000_Node000007" title=" " alt="" coords="69,252,98,279,133,302,160,313,188,320,187,325,159,318,131,307,95,283,65,256"/>
+<area shape="rect" id="Node000008" href="$classnScore_1_1Score.html" title="Класс обёртка отвечает за подсчёт съеденной еды в текущей игре, отрисовка счёта происходит в nAppleWi..." alt="" coords="188,367,299,392"/>
+<area shape="poly" id="edge12_Node000000_Node000008" title=" " alt="" coords="59,255,88,305,109,331,133,352,160,365,189,372,187,377,158,370,131,356,105,334,84,308,54,258"/>
+<area shape="rect" id="Node000009" href="$classnSettings_1_1Settings.html" title="Класс обёртка над общими настройками, настройками игры, настройками управления" alt="" coords="171,416,315,441"/>
+<area shape="poly" id="edge13_Node000000_Node000009" title=" " alt="" coords="54,257,64,290,80,329,103,369,134,401,152,412,172,419,170,424,149,417,130,405,99,372,75,332,59,292,49,258"/>
+</map>

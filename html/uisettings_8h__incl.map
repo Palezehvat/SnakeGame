@@ -1,0 +1,9 @@
+<map id="inc/uisettings.h" name="inc/uisettings.h">
+<area shape="rect" id="Node000001" title="Визуальные настройки еды, змеи, кнопок, шрифта и т.д." alt="" coords="89,5,210,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,72,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,33,70,73,67,69,130,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="96,79,203,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,31,152,65,147,65,147,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="227,79,287,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="168,28,230,69,227,73,165,33"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="inc/gamecontroller.h" name="inc/gamecontroller.h">
+<area shape="rect" id="Node000001" title="Управление логикой игры" alt="" coords="5,5,160,31"/>
+<area shape="rect" id="Node000002" href="$gameview_8h.html" title="Логика, связанная с отрисовкой игры" alt="" coords="21,79,145,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,44,78,78,73,79,71,45"/>
+<area shape="rect" id="Node000003" href="$mainwindow_8h.html" title="Основное окно приложения" alt="" coords="169,79,308,104"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="121,34,214,76,212,81,119,39"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="89,65,87,31,92,31,94,65"/>
+<area shape="rect" id="Node000004" href="$application_8h.html" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="174,152,303,177"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="241,118,241,152,236,152,236,118"/>
+</map>

@@ -1,0 +1,23 @@
+<map id="inc/gameboard.h" name="inc/gameboard.h">
+<area shape="rect" id="Node000001" title="Игровая доска, состоящая из клеток" alt="" coords="140,5,271,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="10,79,91,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,33,89,75,87,70,179,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="115,79,194,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,33,173,69,169,66,195,29"/>
+<area shape="rect" id="Node000004" href="$logger_8h.html" title="Логирование различных этапов программы" alt="" coords="219,79,293,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="216,29,242,66,238,69,212,33"/>
+<area shape="rect" id="Node000008" href="$uisettings_8h.html" title="Визуальные настройки еды, змеи, кнопок, шрифта и т.д." alt="" coords="496,79,595,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="261,28,483,74,482,80,259,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,152,83,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="223,107,92,150,90,145,221,101"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="107,152,231,177"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="244,106,196,145,192,141,240,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="255,152,433,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="272,102,321,141,317,145,268,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="457,152,524,177"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="538,106,510,143,506,140,534,103"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="548,152,655,177"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="557,103,586,140,582,143,552,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="679,152,739,177"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="573,102,671,144,669,149,571,106"/>
+</map>

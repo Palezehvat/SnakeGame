@@ -1,0 +1,48 @@
+<map id="inc/uisettings.h" name="inc/uisettings.h">
+<area shape="rect" id="Node000001" title="Визуальные настройки еды, змеи, кнопок, шрифта и т.д." alt="" coords="373,5,494,31"/>
+<area shape="rect" id="Node000002" href="$applewidget_8h.html" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="94,79,231,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="378,37,207,81,206,76,376,32"/>
+<area shape="rect" id="Node000003" href="$score_8h.html" title="Обёртка над счётом для игры" alt="" coords="193,152,285,177"/>
+<area shape="poly" id="edge30_Node000001_Node000003" title=" " alt="" coords="403,40,339,81,290,120,253,154,249,150,287,116,336,77,400,35"/>
+<area shape="rect" id="Node000005" href="$gameview_8h.html" title="Логика, связанная с отрисовкой игры" alt="" coords="126,372,250,397"/>
+<area shape="poly" id="edge20_Node000001_Node000005" title=" " alt="" coords="359,27,195,46,119,61,89,71,67,81,41,98,23,114,12,135,8,164,8,239,12,264,22,287,38,306,59,324,105,351,150,369,148,374,103,356,55,328,35,310,18,289,7,266,3,240,3,163,7,133,19,111,38,94,64,76,87,66,118,56,195,41,358,22"/>
+<area shape="rect" id="Node000006" href="$mainwindow_8h.html" title="Основное окно приложения" alt="" coords="455,372,593,397"/>
+<area shape="poly" id="edge29_Node000001_Node000006" title=" " alt="" coords="508,22,679,42,760,57,817,76,848,93,872,109,888,131,893,163,893,239,891,260,884,276,873,288,859,297,784,326,736,346,686,360,594,378,593,373,685,355,734,341,782,322,856,292,869,284,879,273,886,259,888,239,888,164,883,133,868,113,845,97,815,81,759,62,678,47,508,28"/>
+<area shape="rect" id="Node000009" href="$controlsettings_8h.html" title="Страница настроек управления игры" alt="" coords="309,152,464,177"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="392,39,367,57,348,80,344,98,350,117,376,150,372,153,346,120,339,99,343,78,363,53,389,35"/>
+<area shape="rect" id="Node000011" href="$gameboard_8h.html" title="Игровая доска, состоящая из клеток" alt="" coords="65,225,196,251"/>
+<area shape="poly" id="edge15_Node000001_Node000011" title=" " alt="" coords="359,24,281,29,199,39,127,55,101,67,83,80,74,98,71,117,74,137,80,157,102,195,123,224,119,227,97,198,76,159,68,138,66,116,69,96,79,77,98,62,125,50,198,33,281,23,358,18"/>
+<area shape="rect" id="Node000012" href="$gamesettings_8h.html" title="Настройки, связанные с игрой" alt="" coords="488,152,635,177"/>
+<area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="471,35,498,54,523,77,547,116,561,151,556,153,543,118,519,80,495,58,468,40"/>
+<area shape="rect" id="Node000013" href="$internalssettings_8h.html" title="Общий вид настройки игры, управляемые пользователем" alt="" coords="585,79,751,104"/>
+<area shape="poly" id="edge21_Node000001_Node000013" title=" " alt="" coords="485,32,631,76,629,81,483,37"/>
+<area shape="rect" id="Node000014" href="$keybindwidget_8h.html" title="Общий вид настройки управления, управляемые пользователем" alt="" coords="357,79,509,104"/>
+<area shape="poly" id="edge23_Node000001_Node000014" title=" " alt="" coords="436,44,436,79,431,79,431,44"/>
+<area shape="rect" id="Node000015" href="$mainmenu_8h.html" title="Основное меню программы(то, что видит пользователь при запуске программы)" alt="" coords="645,299,771,324"/>
+<area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="508,21,584,27,665,38,738,54,766,64,787,77,809,99,821,122,823,148,816,178,797,217,772,252,724,300,720,297,768,248,792,214,811,176,818,148,816,123,805,102,784,81,764,69,736,59,665,43,583,33,508,26"/>
+<area shape="rect" id="Node000016" href="$mainsettings_8h.html" title="Общие настройки" alt="" coords="659,152,802,177"/>
+<area shape="poly" id="edge27_Node000001_Node000016" title=" " alt="" coords="508,19,580,25,656,35,723,52,748,63,765,77,772,97,767,118,756,137,744,153,740,150,752,134,762,116,767,97,761,80,745,68,721,57,655,41,580,30,508,25"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="187,111,228,150,224,154,183,115"/>
+<area shape="rect" id="Node000004" href="$gamecontroller_8h.html" title="Управление логикой игры" alt="" coords="168,299,323,324"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="243,191,247,298,242,299,237,191"/>
+<area shape="rect" id="Node000008" href="$gamepanel_8h.html" title="Визуальное объедение счёта и игровой части(поля)" alt="" coords="276,225,407,251"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="268,183,326,223,323,227,265,187"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="222,336,193,374,188,370,218,332"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="304,325,480,369,478,374,303,330"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="212,360,241,323,245,326,216,364"/>
+<area shape="rect" id="Node000007" href="$application_8h.html" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="459,445,589,471"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="527,411,527,445,521,445,521,411"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="316,261,263,301,259,296,313,257"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="369,258,511,370,508,374,366,262"/>
+<area shape="rect" id="Node000010" href="$settings_8h.html" title="Обёртка над общими настройками, настройками игры, настройками управления" alt="" coords="469,225,579,251"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="422,181,503,223,500,227,419,186"/>
+<area shape="poly" id="edge13_Node000010_Node000004" title=" " alt="" coords="467,257,291,301,290,296,466,251"/>
+<area shape="poly" id="edge14_Node000010_Node000006" title=" " alt="" coords="527,265,527,372,521,372,521,265"/>
+<area shape="poly" id="edge16_Node000011_Node000004" title=" " alt="" coords="162,255,228,296,225,301,159,260"/>
+<area shape="poly" id="edge17_Node000011_Node000005" title=" " alt="" coords="139,264,158,323,183,371,179,373,154,325,134,265"/>
+<area shape="poly" id="edge19_Node000012_Node000010" title=" " alt="" coords="551,191,532,226,528,224,547,188"/>
+<area shape="poly" id="edge22_Node000013_Node000012" title=" " alt="" coords="641,114,580,154,577,150,638,109"/>
+<area shape="poly" id="edge24_Node000014_Node000009" title=" " alt="" coords="420,117,396,153,392,150,416,114"/>
+<area shape="poly" id="edge26_Node000015_Node000006" title=" " alt="" coords="667,331,555,374,553,369,665,326"/>
+<area shape="poly" id="edge28_Node000016_Node000010" title=" " alt="" coords="685,184,558,228,557,223,684,179"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="inc/logger.h" name="inc/logger.h">
+<area shape="rect" id="Node000001" title="Логирование различных этапов программы" alt="" coords="121,5,218,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,83,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,33,78,74,75,69,148,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,79,231,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,31,172,65,167,65,167,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="255,79,433,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="198,28,304,71,302,76,196,33"/>
+</map>

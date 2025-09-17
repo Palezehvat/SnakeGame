@@ -1,0 +1,13 @@
+<map id="inc/gameboard.h" name="inc/gameboard.h">
+<area shape="rect" id="Node000001" title="Игровая доска, состоящая из клеток" alt="" coords="5,5,136,31"/>
+<area shape="rect" id="Node000002" href="$gamecontroller_8h.html" title="Управление логикой игры" alt="" coords="51,79,205,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,40,121,77,117,80,86,43"/>
+<area shape="rect" id="Node000003" href="$gameview_8h.html" title="Логика, связанная с отрисовкой игры" alt="" coords="9,152,133,177"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="57,43,41,79,40,99,46,118,64,150,59,153,41,120,35,99,36,78,52,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,116,75,154,71,150,100,112"/>
+<area shape="rect" id="Node000004" href="$mainwindow_8h.html" title="Основное окно приложения" alt="" coords="157,152,296,177"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="156,110,212,150,209,154,153,114"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="94,140,123,103,128,106,99,144"/>
+<area shape="rect" id="Node000005" href="$application_8h.html" title="Отрисовка яблока и количество съеденных яблок" alt="" coords="162,225,291,251"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="229,191,229,225,224,225,224,191"/>
+</map>

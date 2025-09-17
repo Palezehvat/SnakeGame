@@ -1,0 +1,5 @@
+<map id="nGamePanel::GamePanel" name="nGamePanel::GamePanel">
+<area shape="rect" id="Node000001" title="Класс для визуального объединения счёта и игровой части(поля)" alt="" coords="5,79,192,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="59,5,138,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,44,101,79,96,79,96,44"/>
+</map>

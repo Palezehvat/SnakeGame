@@ -1,0 +1,41 @@
+<map id="inc/controlsettings.h" name="inc/controlsettings.h">
+<area shape="rect" id="Node000001" title="Страница настроек управления игры" alt="" coords="468,5,623,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="23,152,102,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="497,33,315,81,108,150,106,145,314,76,496,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="279,225,385,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="468,29,347,45,209,70,144,86,86,106,41,128,13,154,8,165,13,176,29,188,53,199,118,216,194,226,265,231,265,237,194,231,117,221,51,204,26,193,8,179,3,165,8,150,38,124,84,101,142,81,208,64,346,39,467,24"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="634,79,745,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="570,28,655,70,652,75,567,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="769,79,871,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="590,28,763,73,762,78,589,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="896,79,963,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="619,28,739,48,883,76,882,81,738,53,618,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="560,152,645,177"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="552,30,580,103,595,138,590,140,575,105,547,32"/>
+<area shape="rect" id="Node000008" href="$logger_8h.html" title="Логирование различных этапов программы" alt="" coords="669,152,744,177"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="556,29,585,63,623,102,678,143,675,147,620,106,581,67,552,33"/>
+<area shape="rect" id="Node000012" href="$keybindwidget_8h.html" title="Общий вид настройки управления, управляемые пользователем" alt="" coords="327,79,457,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="522,33,430,75,428,70,519,28"/>
+<area shape="rect" id="Node000015" href="$uisettings_8h.html" title="Визуальные настройки еды, змеи, кнопок, шрифта и т.д." alt="" coords="437,152,536,177"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="543,32,499,140,494,138,538,30"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="585,225,663,251"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="695,179,650,218,646,214,692,175"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="687,225,811,251"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="716,176,738,212,733,215,711,179"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="835,225,1013,251"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="742,175,876,218,875,224,741,180"/>
+<area shape="poly" id="edge12_Node000012_Node000002" title=" " alt="" coords="338,107,116,154,115,149,337,101"/>
+<area shape="poly" id="edge13_Node000012_Node000003" title=" " alt="" coords="394,104,389,138,377,178,353,216,349,214,372,176,384,137,388,104"/>
+<area shape="poly" id="edge16_Node000012_Node000007" title=" " alt="" coords="427,101,557,145,555,150,425,107"/>
+<area shape="poly" id="edge21_Node000012_Node000008" title=" " alt="" coords="444,101,656,149,655,154,443,107"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="269,152,363,177"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="382,106,340,144,337,141,378,102"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="126,152,245,177"/>
+<area shape="poly" id="edge15_Node000012_Node000014" title=" " alt="" coords="360,107,233,150,231,145,358,101"/>
+<area shape="poly" id="edge17_Node000012_Node000015" title=" " alt="" coords="409,102,462,141,459,146,406,106"/>
+<area shape="poly" id="edge19_Node000015_Node000003" title=" " alt="" coords="463,180,371,222,368,217,461,175"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="409,225,476,251"/>
+<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="482,179,459,215,455,212,477,176"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="501,225,561,251"/>
+<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="496,176,519,212,514,215,492,179"/>
+</map>
