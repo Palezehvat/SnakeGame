@@ -57,7 +57,7 @@ jobs:
       - name: Build project
         run: cd build && cmake .. && make
       - name: Start Tests
-        run: ./tests/tests
+        run: ./build/tests/tests
 
   docs:
     runs-on: ubuntu-latest
@@ -70,10 +70,6 @@ jobs:
               sudo apt-get install -y \
                 doxygen \
                 graphviz
-              cd /usr/src/gtest
-              sudo cmake .
-              sudo make
-              sudo cp lib/*.a /usr/lib
       - name: Generate documentation
         run: doxygen
       - name: Deploy documentation
