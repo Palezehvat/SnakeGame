@@ -15,6 +15,10 @@ sudo apt install libxkbcommon-dev
 sudo apt install libspdlog-dev
 sudo apt install doxygen
 sudo apt install graphviz
+cd /usr/src/gtest
+sudo cmake .
+sudo make
+sudo cp lib/*.a /usr/lib
 ```
 
 ## Запуск приложения
