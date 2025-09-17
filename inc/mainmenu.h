@@ -9,7 +9,6 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QCoreApplication>
 #include "logger.h"
 #include "uisettings.h"
 

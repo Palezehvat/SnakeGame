@@ -7,7 +7,6 @@
 #define UISETTINGS_H
 
 #include <QColor>
-#include <QCoreApplication>
 #include <QPushButton>
 #include <QFont>
 
@@ -46,10 +45,8 @@ namespace UISettings {
     const QString firstColorStickApple         = "#5a3c0a";
     const QString secondColorStickApple        = "#8b5e2b";
 
-    const QString backgroundPathMainMenu       = "/../images/mainmenu/background.png";
-    const QString settingsIconPathMainMenu     = "/../images/mainmenu/iconSettings.png";
-
-    const QString backgroundPathSettings       = "/../images/settings/background.png";
+    const QString backgroundPathMainMenu   = ":/images/mainmenu/background.png";
+    const QString backgroundPathSettings   = ":/images/settings/background.png";
 
     const QString nameFileSettings             = "settings.ini";
 

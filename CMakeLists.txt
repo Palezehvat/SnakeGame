@@ -12,6 +12,8 @@ set(CMAKE_AUTOUIC ON)
 
 include_directories(inc)
 
+qt_add_resources(resources resources.qrc)
+
 find_package(GTest REQUIRED)
 enable_testing()
 
@@ -127,4 +129,5 @@ target_link_libraries(app PRIVATE mainwindow logger Qt6::Core Qt6::Gui Qt6::Widg
 # ----- Main ----- #
 
 add_executable(main main.cpp)
+target_sources(main PRIVATE ${resources})
 target_link_libraries(main PRIVATE app Qt6::Core Qt6::Gui Qt6::Widgets)

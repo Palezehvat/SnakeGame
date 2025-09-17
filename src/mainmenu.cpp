@@ -32,8 +32,7 @@ namespace nMenu {
     }
 
     void Menu::showBackground() {
-        background = QPixmap(QCoreApplication::applicationDirPath() 
-        + UISettings::backgroundPathMainMenu);
+        background = QPixmap(UISettings::backgroundPathMainMenu);
 
         if (background.isNull()) {
             logger->error("Не удалось подгрузить картинку, на задний фон экрана(главное меню)");

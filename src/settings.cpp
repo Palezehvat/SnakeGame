@@ -45,8 +45,7 @@ namespace nSettings {
     }
 
     void Settings::showBackground() {
-        background = QPixmap(QCoreApplication::applicationDirPath() 
-                           + UISettings::backgroundPathSettings);
+        background = QPixmap(UISettings::backgroundPathSettings);
 
         if (background.isNull()) {
             logger->error("Не удалось подгрузить картинку, на задний фон экрана(настройки)");
